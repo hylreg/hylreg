@@ -17,3 +17,6 @@ target_link_libraries(PCDWrite ${PCL_LIBRARIES})
 add_executable(PassThroughFilter Filtering/pass_through_filter.cpp)
 target_link_libraries(PassThroughFilter ${PCL_LIBRARIES})
 
+#使用体素网格滤波器过滤点云
+add_executable(VoxelGridFilter Filtering/voxel_grid_filter.cpp)
+target_link_libraries(VoxelGridFilter ${PCL_LIBRARIES})
