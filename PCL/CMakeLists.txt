@@ -20,3 +20,7 @@ target_link_libraries(PassThroughFilter ${PCL_LIBRARIES})
 #使用体素网格滤波器过滤点云
 add_executable(VoxelGridFilter Filtering/voxel_grid_filter.cpp)
 target_link_libraries(VoxelGridFilter ${PCL_LIBRARIES})
+
+#使用统计滤波器过滤点云
+add_executable(StatisticalOutlierRemoval Filtering/statistical_outlier_removal.cpp)
+target_link_libraries(StatisticalOutlierRemoval ${PCL_LIBRARIES})
