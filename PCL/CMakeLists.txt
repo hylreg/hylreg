@@ -24,3 +24,8 @@ target_link_libraries(VoxelGridFilter ${PCL_LIBRARIES})
 #使用统计滤波器过滤点云
 add_executable(StatisticalOutlierRemoval Filtering/statistical_outlier_removal.cpp)
 target_link_libraries(StatisticalOutlierRemoval ${PCL_LIBRARIES})
+
+#使用条件滤波器过滤点云
+add_executable(ConditionFilter Filtering/condition_filter.cpp)
+target_link_libraries(ConditionFilter ${PCL_LIBRARIES})
+
