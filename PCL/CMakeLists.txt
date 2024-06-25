@@ -29,3 +29,7 @@ target_link_libraries(StatisticalOutlierRemoval ${PCL_LIBRARIES})
 add_executable(ConditionFilter Filtering/condition_filter.cpp)
 target_link_libraries(ConditionFilter ${PCL_LIBRARIES})
 
+#使用参数化模型投影点
+add_executable(ProjectInliers Filtering/project_inliers.cpp)
+target_link_libraries(ProjectInliers ${PCL_LIBRARIES})
+
