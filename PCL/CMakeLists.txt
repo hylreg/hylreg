@@ -13,6 +13,11 @@ target_link_libraries(PCDRead ${PCL_LIBRARIES})
 add_executable(PCDWrite IO/pcd_write.cpp)
 target_link_libraries(PCDWrite ${PCL_LIBRARIES})
 
+#连接两个点云的点
+add_executable(ConcatenatePointClouds IO/concatenate_point_clouds.cpp)
+target_link_libraries(ConcatenatePointClouds ${PCL_LIBRARIES})
+
+
 #使用直通过滤器过滤点云
 add_executable(PassThroughFilter Filtering/pass_through_filter.cpp)
 target_link_libraries(PassThroughFilter ${PCL_LIBRARIES})
