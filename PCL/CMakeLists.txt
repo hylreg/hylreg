@@ -33,3 +33,7 @@ target_link_libraries(ConditionFilter ${PCL_LIBRARIES})
 add_executable(ProjectInliers Filtering/project_inliers.cpp)
 target_link_libraries(ProjectInliers ${PCL_LIBRARIES})
 
+#从点云中提取索引
+add_executable(ExtractIndices Filtering/extract_indices.cpp)
+target_link_libraries(ExtractIndices ${PCL_LIBRARIES})
+
