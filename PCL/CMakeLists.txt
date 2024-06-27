@@ -42,3 +42,6 @@ target_link_libraries(ProjectInliers ${PCL_LIBRARIES})
 add_executable(ExtractIndices Filtering/extract_indices.cpp)
 target_link_libraries(ExtractIndices ${PCL_LIBRARIES})
 
+#估计点云中的表面法线
+add_executable(EstimateNormals Features/estimate_normals.cpp)
+target_link_libraries(EstimateNormals ${PCL_LIBRARIES})
