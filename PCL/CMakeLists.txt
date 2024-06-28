@@ -46,7 +46,15 @@ target_link_libraries(ExtractIndices ${PCL_LIBRARIES})
 add_executable(EstimateNormals Features/estimate_normals.cpp)
 target_link_libraries(EstimateNormals ${PCL_LIBRARIES})
 
+##使用积分图像的正态估计
+#add_executable(NormalEstimationUsingIntegralImages Features/normal_estimation_using_integral_images.cpp)
+#target_link_libraries(NormalEstimationUsingIntegralImages ${PCL_LIBRARIES})
+
 #icp
 add_executable(ICP Registration/icp.cpp)
 target_link_libraries(ICP ${PCL_LIBRARIES})
+
+#KdTree
+add_executable(KdTree KdTree/kd_tree.cpp)
+target_link_libraries(KdTree ${PCL_LIBRARIES})
 
