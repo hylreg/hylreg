@@ -45,3 +45,8 @@ target_link_libraries(ExtractIndices ${PCL_LIBRARIES})
 #估计点云中的表面法线
 add_executable(EstimateNormals Features/estimate_normals.cpp)
 target_link_libraries(EstimateNormals ${PCL_LIBRARIES})
+
+#icp
+add_executable(ICP Registration/icp.cpp)
+target_link_libraries(ICP ${PCL_LIBRARIES})
+
