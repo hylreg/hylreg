@@ -58,3 +58,6 @@ target_link_libraries(ICP ${PCL_LIBRARIES})
 add_executable(KdTree KdTree/kd_tree.cpp)
 target_link_libraries(KdTree ${PCL_LIBRARIES})
 
+#Interactive Iterative Closest Point
+add_executable(InteractiveICP Registration/interactive_icp.cpp)
+target_link_libraries(InteractiveICP ${PCL_LIBRARIES})
