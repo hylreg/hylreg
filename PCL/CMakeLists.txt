@@ -61,3 +61,7 @@ target_link_libraries(KdTree ${PCL_LIBRARIES})
 #Interactive Iterative Closest Point
 add_executable(InteractiveICP Registration/interactive_icp.cpp)
 target_link_libraries(InteractiveICP ${PCL_LIBRARIES})
+
+#Normal Distributions Transform
+add_executable(NDT Registration/ndt.cpp)
+target_link_libraries(NDT ${PCL_LIBRARIES})
