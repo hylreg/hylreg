@@ -65,3 +65,8 @@ target_link_libraries(InteractiveICP ${PCL_LIBRARIES})
 #Normal Distributions Transform
 add_executable(NDT Registration/ndt.cpp)
 target_link_libraries(NDT ${PCL_LIBRARIES})
+
+add_executable(AlignmentPrerejective Registration/alignment_prerejective.cpp)
+
+target_link_libraries(AlignmentPrerejective ${PCL_LIBRARIES})
+
