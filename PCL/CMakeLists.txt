@@ -76,3 +76,7 @@ target_link_libraries(PointCloudCompression ${PCL_LIBRARIES})
 #narf_keypoint_extraction
 add_executable(NARFKeypointExtraction Keypoints/narf_keypoint_extraction.cpp)
 target_link_libraries(NARFKeypointExtraction ${PCL_LIBRARIES})
+
+#use Random Sample Consensus model
+add_executable(RandomSampleConsensus SampleConsensus/random_sample_consensus.cpp)
+target_link_libraries(RandomSampleConsensus ${PCL_LIBRARIES})
