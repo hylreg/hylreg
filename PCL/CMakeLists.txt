@@ -80,3 +80,7 @@ target_link_libraries(NARFKeypointExtraction ${PCL_LIBRARIES})
 #use Random Sample Consensus model
 add_executable(RandomSampleConsensus SampleConsensus/random_sample_consensus.cpp)
 target_link_libraries(RandomSampleConsensus ${PCL_LIBRARIES})
+
+#基于多项式重构的平滑和正态估计
+add_executable(Resampling Surface/resampling.cpp)
+target_link_libraries(Resampling ${PCL_LIBRARIES})
