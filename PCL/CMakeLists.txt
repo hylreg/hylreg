@@ -84,3 +84,7 @@ target_link_libraries(RandomSampleConsensus ${PCL_LIBRARIES})
 #基于多项式重构的平滑和正态估计
 add_executable(Resampling Surface/resampling.cpp)
 target_link_libraries(Resampling ${PCL_LIBRARIES})
+
+#基于多项式重构的平滑和正态估计
+add_executable (ConcaveHull2D Surface/concave_hull_2d.cpp)
+target_link_libraries(ConcaveHull2D ${PCL_LIBRARIES})
