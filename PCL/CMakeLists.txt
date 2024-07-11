@@ -92,3 +92,6 @@ find_package(PCL REQUIRED)
 #PCA
 add_executable(PCA Other/pca.cpp)
 target_link_libraries(PCA ${PCL_LIBRARIES})
+
+add_executable(SIFT Keypoints/SIFT.cpp)
+target_link_libraries(SIFT ${PCL_LIBRARIES})
