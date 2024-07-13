@@ -95,3 +95,6 @@ target_link_libraries(PCA ${PCL_LIBRARIES})
 
 add_executable(SIFT Keypoints/SIFT.cpp)
 target_link_libraries(SIFT ${PCL_LIBRARIES})
+
+add_executable(Harris Keypoints/Harris.cpp)
+target_link_libraries(Harris ${PCL_LIBRARIES})
