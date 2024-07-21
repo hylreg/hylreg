@@ -102,3 +102,6 @@ add_executable(ISS Keypoints/ISS.cpp)
 target_link_libraries(ISS ${PCL_LIBRARIES})
 add_executable(NARF Keypoints/NARF.cpp)
 target_link_libraries(NARF ${PCL_LIBRARIES})
+
+add_executable(CorrespondingGrouping Recognition/correspondence_grouping.cpp)
+target_link_libraries(CorrespondingGrouping ${PCL_LIBRARIES})
