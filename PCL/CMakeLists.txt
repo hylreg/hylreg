@@ -105,3 +105,5 @@ target_link_libraries(NARF ${PCL_LIBRARIES})
 
 add_executable(CorrespondingGrouping Recognition/correspondence_grouping.cpp)
 target_link_libraries(CorrespondingGrouping ${PCL_LIBRARIES})
+add_executable(ImplicitShapeModel Recognition/implicit_shape_model.cpp)
+target_link_libraries(ImplicitShapeModel ${PCL_LIBRARIES})
