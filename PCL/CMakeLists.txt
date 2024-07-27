@@ -4,6 +4,7 @@ project(PCL)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(PCL REQUIRED)
+find_package(HDF5 REQUIRED)
 
 ##读取PCD文件
 #add_executable(PCDRead IO/pcd_read.cpp)
@@ -89,23 +90,104 @@ find_package(PCL REQUIRED)
 #add_executable (ConcaveHull2D Surface/concave_hull_2d.cpp)
 #target_link_libraries(ConcaveHull2D ${PCL_LIBRARIES})
 
-#PCA
-add_executable(PCA Other/pca.cpp)
-target_link_libraries(PCA ${PCL_LIBRARIES})
+##PCA
+#add_executable(PCA Other/pca.cpp)
+#target_link_libraries(PCA ${PCL_LIBRARIES})
+#
+#add_executable(HistogramVisualization Other/HistogramVisualization.cpp)
+#target_link_libraries(HistogramVisualization ${PCL_LIBRARIES})
+#
+#add_executable(TemplateAlignment Applications/template_alignment.cpp)
+#target_link_libraries(TemplateAlignment ${PCL_LIBRARIES})
+#
+#add_executable(BuildTree Applications/build_tree.cpp)
+#target_link_libraries(BuildTree ${PCL_LIBRARIES} ${HDF5_LIBRARIES})
+#
+#add_executable(NearestNeighbors Applications/nearest_neighbors.cpp)
+#target_link_libraries(NearestNeighbors ${PCL_LIBRARIES} ${HDF5_LIBRARIES})
+#
+#add_executable(SIFT Keypoints/SIFT.cpp)
+#target_link_libraries(SIFT ${PCL_LIBRARIES})
+#
+#add_executable(Harris Keypoints/Harris.cpp)
+#target_link_libraries(Harris ${PCL_LIBRARIES})
+#add_executable(ISS Keypoints/ISS.cpp)
+#target_link_libraries(ISS ${PCL_LIBRARIES})
+#add_executable(NARF Keypoints/NARF.cpp)
+#target_link_libraries(NARF ${PCL_LIBRARIES})
+#
+#add_executable(CorrespondingGrouping Recognition/correspondence_grouping.cpp)
+#target_link_libraries(CorrespondingGrouping ${PCL_LIBRARIES})
+#add_executable(ImplicitShapeModel Recognition/implicit_shape_model.cpp)
+#target_link_libraries(ImplicitShapeModel ${PCL_LIBRARIES})
+#add_executable(GlobalHypothesisValidation Recognition/global_hypothesis_verification.cpp)
+#target_link_libraries(GlobalHypothesisValidation ${PCL_LIBRARIES})
 
-add_executable(SIFT Keypoints/SIFT.cpp)
-target_link_libraries(SIFT ${PCL_LIBRARIES})
+#Segmentation
+add_executable(PlanarSegmentation Segmentation/planar_segmentation.cpp)
+target_link_libraries(PlanarSegmentation ${PCL_LIBRARIES})
 
-add_executable(Harris Keypoints/Harris.cpp)
-target_link_libraries(Harris ${PCL_LIBRARIES})
-add_executable(ISS Keypoints/ISS.cpp)
-target_link_libraries(ISS ${PCL_LIBRARIES})
-add_executable(NARF Keypoints/NARF.cpp)
-target_link_libraries(NARF ${PCL_LIBRARIES})
+#add_executable(CylinderSegmentation Segmentation/cylinder_segmentation.cpp)
+#target_link_libraries(CylinderSegmentation ${PCL_LIBRARIES})
+#
+#add_executable(ClusterExtraction Segmentation/cluster_extraction.cpp)
+#target_link_libraries(ClusterExtraction ${PCL_LIBRARIES})
+#
+#add_executable(RegionGrowingSegmentation Segmentation/region_growing_segmentation.cpp)
+#target_link_libraries(RegionGrowingSegmentation ${PCL_LIBRARIES})
+#
+#add_executable(RegionGrowingRGBSegmentation Segmentation/region_growing_rgb_segmentation.cpp)
+#target_link_libraries(RegionGrowingRGBSegmentation ${PCL_LIBRARIES})
+#
+#add_executable(MinCutSegmentation Segmentation/min_cut_segmentation.cpp)
+#target_link_libraries(MinCutSegmentation ${PCL_LIBRARIES})
+#
+#add_executable(ConditionalEuclideanClustering Segmentation/conditional_euclidean_clustering.cpp)
+#target_link_libraries(ConditionalEuclideanClustering ${PCL_LIBRARIES})
+#
+#add_executable(DonSegmentation Segmentation/don_segmentation.cpp)
+#target_link_libraries(DonSegmentation ${PCL_LIBRARIES})
+#
+#add_executable(SupervoxelClustering Segmentation/supervoxel_clustering.cpp)
+#target_link_libraries(SupervoxelClustering ${PCL_LIBRARIES})
+#
+#add_executable(BareEarth Segmentation/bare_earth.cpp)
+#target_link_libraries(BareEarth ${PCL_LIBRARIES})
+#
+#add_executable(ModelOutlierRemoval Segmentation/model_outlier_removal.cpp)
+#target_link_libraries(ModelOutlierRemoval ${PCL_LIBRARIES})
 
-add_executable(CorrespondingGrouping Recognition/correspondence_grouping.cpp)
-target_link_libraries(CorrespondingGrouping ${PCL_LIBRARIES})
-add_executable(ImplicitShapeModel Recognition/implicit_shape_model.cpp)
-target_link_libraries(ImplicitShapeModel ${PCL_LIBRARIES})
-add_executable(GlobalHypothesisValidation Recognition/global_hypothesis_verification.cpp)
-target_link_libraries(GlobalHypothesisValidation ${PCL_LIBRARIES})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
