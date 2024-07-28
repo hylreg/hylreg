@@ -127,8 +127,8 @@ find_package(HDF5 REQUIRED)
 add_executable(PlanarSegmentation Segmentation/planar_segmentation.cpp)
 target_link_libraries(PlanarSegmentation ${PCL_LIBRARIES})
 
-#add_executable(CylinderSegmentation Segmentation/cylinder_segmentation.cpp)
-#target_link_libraries(CylinderSegmentation ${PCL_LIBRARIES})
+add_executable(CylinderSegmentation Segmentation/cylinder_segmentation.cpp)
+target_link_libraries(CylinderSegmentation ${PCL_LIBRARIES})
 #
 #add_executable(ClusterExtraction Segmentation/cluster_extraction.cpp)
 #target_link_libraries(ClusterExtraction ${PCL_LIBRARIES})
