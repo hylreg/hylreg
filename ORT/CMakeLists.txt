@@ -5,12 +5,16 @@ set(CMAKE_CXX_STANDARD 17)
 
 #find_package(onnxruntime REQUIRED)
 #find_package(CUDA REQUIRED)
+find_package(OpenCV REQUIRED)
 
 set(ONNXRUNTIME_ROOT "D:/Libraries/vcpkg/packages/onnxruntime-gpu_x64-windows")
 include_directories(ORT ${ONNXRUNTIME_ROOT}/include)
 
 add_executable(ORT main.cpp)
 target_link_libraries(ORT ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib )
+
+add_executable(yolov8ORT yolo/yolov8_onnxruntime_demo.cpp)
+target_link_libraries(yolov8ORT ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib ${OpenCV_LIBS} )
 
 
 
