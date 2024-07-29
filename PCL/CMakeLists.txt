@@ -5,6 +5,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(PCL REQUIRED)
 find_package(HDF5 REQUIRED)
+#find_package(libcudacxx REQUIRED)
+#find_package(CUDA REQUIRED)
+
+
+#set(CUDA_ROOT "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.5")
+#include_directories(PCL ${CUDA_ROOT}/include)
+#find_library(CUDA_LIBRARIES ${CUDA_ROOT}/lib/x64)
 
 ##读取PCD文件
 #add_executable(PCDRead IO/pcd_read.cpp)
@@ -93,12 +100,15 @@ find_package(HDF5 REQUIRED)
 ##PCA
 #add_executable(PCA Other/pca.cpp)
 #target_link_libraries(PCA ${PCL_LIBRARIES})
+
+#add_executable(GPUTest Other/GPUTest.cpp)
+#target_link_libraries(GPUTest ${PCL_LIBRARIES})
 #
 #add_executable(HistogramVisualization Other/HistogramVisualization.cpp)
 #target_link_libraries(HistogramVisualization ${PCL_LIBRARIES})
 #
-#add_executable(TemplateAlignment Applications/template_alignment.cpp)
-#target_link_libraries(TemplateAlignment ${PCL_LIBRARIES})
+add_executable(TemplateAlignment Applications/template_alignment.cpp)
+target_link_libraries(TemplateAlignment ${PCL_LIBRARIES})
 #
 #add_executable(BuildTree Applications/build_tree.cpp)
 #target_link_libraries(BuildTree ${PCL_LIBRARIES} ${HDF5_LIBRARIES})
@@ -123,12 +133,12 @@ find_package(HDF5 REQUIRED)
 #add_executable(GlobalHypothesisValidation Recognition/global_hypothesis_verification.cpp)
 #target_link_libraries(GlobalHypothesisValidation ${PCL_LIBRARIES})
 
-#Segmentation
-add_executable(PlanarSegmentation Segmentation/planar_segmentation.cpp)
-target_link_libraries(PlanarSegmentation ${PCL_LIBRARIES})
-
-add_executable(CylinderSegmentation Segmentation/cylinder_segmentation.cpp)
-target_link_libraries(CylinderSegmentation ${PCL_LIBRARIES})
+##Segmentation
+#add_executable(PlanarSegmentation Segmentation/planar_segmentation.cpp)
+#target_link_libraries(PlanarSegmentation ${PCL_LIBRARIES})
+#
+#add_executable(CylinderSegmentation Segmentation/cylinder_segmentation.cpp)
+#target_link_libraries(CylinderSegmentation ${PCL_LIBRARIES})
 #
 #add_executable(ClusterExtraction Segmentation/cluster_extraction.cpp)
 #target_link_libraries(ClusterExtraction ${PCL_LIBRARIES})
