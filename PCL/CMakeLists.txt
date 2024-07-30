@@ -107,8 +107,8 @@ find_package(HDF5 REQUIRED)
 #add_executable(HistogramVisualization Other/HistogramVisualization.cpp)
 #target_link_libraries(HistogramVisualization ${PCL_LIBRARIES})
 #
-add_executable(TemplateAlignment Applications/template_alignment.cpp)
-target_link_libraries(TemplateAlignment ${PCL_LIBRARIES})
+#add_executable(TemplateAlignment Applications/template_alignment.cpp)
+#target_link_libraries(TemplateAlignment ${PCL_LIBRARIES})
 #
 #add_executable(BuildTree Applications/build_tree.cpp)
 #target_link_libraries(BuildTree ${PCL_LIBRARIES} ${HDF5_LIBRARIES})
@@ -133,39 +133,39 @@ target_link_libraries(TemplateAlignment ${PCL_LIBRARIES})
 #add_executable(GlobalHypothesisValidation Recognition/global_hypothesis_verification.cpp)
 #target_link_libraries(GlobalHypothesisValidation ${PCL_LIBRARIES})
 
-##Segmentation
+#Segmentation
 #add_executable(PlanarSegmentation Segmentation/planar_segmentation.cpp)
 #target_link_libraries(PlanarSegmentation ${PCL_LIBRARIES})
 #
 #add_executable(CylinderSegmentation Segmentation/cylinder_segmentation.cpp)
 #target_link_libraries(CylinderSegmentation ${PCL_LIBRARIES})
-#
-#add_executable(ClusterExtraction Segmentation/cluster_extraction.cpp)
-#target_link_libraries(ClusterExtraction ${PCL_LIBRARIES})
-#
-#add_executable(RegionGrowingSegmentation Segmentation/region_growing_segmentation.cpp)
-#target_link_libraries(RegionGrowingSegmentation ${PCL_LIBRARIES})
-#
-#add_executable(RegionGrowingRGBSegmentation Segmentation/region_growing_rgb_segmentation.cpp)
-#target_link_libraries(RegionGrowingRGBSegmentation ${PCL_LIBRARIES})
-#
-#add_executable(MinCutSegmentation Segmentation/min_cut_segmentation.cpp)
-#target_link_libraries(MinCutSegmentation ${PCL_LIBRARIES})
-#
-#add_executable(ConditionalEuclideanClustering Segmentation/conditional_euclidean_clustering.cpp)
-#target_link_libraries(ConditionalEuclideanClustering ${PCL_LIBRARIES})
-#
-#add_executable(DonSegmentation Segmentation/don_segmentation.cpp)
-#target_link_libraries(DonSegmentation ${PCL_LIBRARIES})
-#
-#add_executable(SupervoxelClustering Segmentation/supervoxel_clustering.cpp)
-#target_link_libraries(SupervoxelClustering ${PCL_LIBRARIES})
-#
-#add_executable(BareEarth Segmentation/bare_earth.cpp)
-#target_link_libraries(BareEarth ${PCL_LIBRARIES})
-#
-#add_executable(ModelOutlierRemoval Segmentation/model_outlier_removal.cpp)
-#target_link_libraries(ModelOutlierRemoval ${PCL_LIBRARIES})
+
+add_executable(ClusterExtraction Segmentation/cluster_extraction.cpp)
+target_link_libraries(ClusterExtraction ${PCL_LIBRARIES})
+
+add_executable(RegionGrowingSegmentation Segmentation/region_growing_segmentation.cpp)
+target_link_libraries(RegionGrowingSegmentation ${PCL_LIBRARIES})
+
+add_executable(RegionGrowingRGBSegmentation Segmentation/region_growing_rgb_segmentation.cpp)
+target_link_libraries(RegionGrowingRGBSegmentation ${PCL_LIBRARIES})
+
+add_executable(MinCutSegmentation Segmentation/min_cut_segmentation.cpp)
+target_link_libraries(MinCutSegmentation ${PCL_LIBRARIES})
+
+add_executable(ConditionalEuclideanClustering Segmentation/conditional_euclidean_clustering.cpp)
+target_link_libraries(ConditionalEuclideanClustering ${PCL_LIBRARIES})
+
+add_executable(DonSegmentation Segmentation/don_segmentation.cpp)
+target_link_libraries(DonSegmentation ${PCL_LIBRARIES})
+
+add_executable(SupervoxelClustering Segmentation/supervoxel_clustering.cpp)
+target_link_libraries(SupervoxelClustering ${PCL_LIBRARIES})
+
+add_executable(BareEarth Segmentation/bare_earth.cpp)
+target_link_libraries(BareEarth ${PCL_LIBRARIES})
+
+add_executable(ModelOutlierRemoval Segmentation/model_outlier_removal.cpp)
+target_link_libraries(ModelOutlierRemoval ${PCL_LIBRARIES})
 
 
 
