@@ -101,8 +101,8 @@ find_package(HDF5 REQUIRED)
 #add_executable(PCA Other/pca.cpp)
 #target_link_libraries(PCA ${PCL_LIBRARIES})
 
-#add_executable(GPUTest Other/GPUTest.cpp)
-#target_link_libraries(GPUTest ${PCL_LIBRARIES})
+add_executable(GPUTest Other/GPUTest.cpp)
+target_link_libraries(GPUTest ${PCL_LIBRARIES})
 #
 #add_executable(HistogramVisualization Other/HistogramVisualization.cpp)
 #target_link_libraries(HistogramVisualization ${PCL_LIBRARIES})
