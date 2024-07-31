@@ -1,0 +1,7 @@
+# A list of point clouds to try aligning
+D:/Libraries/pcl/data/tutorials/template_alignment/object_template_0.pcd
+D:/Libraries/pcl/data/tutorials/template_alignment/object_template_1.pcd
+D:/Libraries/pcl/data/tutorials/template_alignment/object_template_2.pcd
+D:/Libraries/pcl/data/tutorials/template_alignment/object_template_3.pcd
+D:/Libraries/pcl/data/tutorials/template_alignment/object_template_4.pcd
+D:/Libraries/pcl/data/tutorials/template_alignment/object_template_5.pcd
