@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 #find_package(CUDA REQUIRED)
 find_package(OpenCV REQUIRED)
 
-set(ONNXRUNTIME_ROOT "D:/Libraries/vcpkg/packages/onnxruntime-gpu_x64-windows")
+set(ONNXRUNTIME_ROOT "D:/Libraries/vcpkg/installed/x64-windows")
 include_directories(ORT ${ONNXRUNTIME_ROOT}/include)
 
 add_executable(ORT main.cpp)
