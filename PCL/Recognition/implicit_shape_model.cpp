@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by Admin on 2024/7/14.
 //
 #include <iostream>
@@ -60,7 +60,7 @@ main(int argc, char **argv) {
         new pcl::features::ISMModel);
     ism.trainISM(model);
 
-    std::string file("trained_ism_model.txt");
+    std::string file("../data/trained_ism_model.txt");
     model->saveModelToFile(file);
 
     model->loadModelFromfile(file);
