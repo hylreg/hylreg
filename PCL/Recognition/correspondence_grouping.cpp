@@ -44,8 +44,8 @@ showHelp (char *filename)
   std::cout << "***************************************************************************" << std::endl << std::endl;
   std::cout << "Usage: " << filename << " model_filename.pcd scene_filename.pcd [Options]" << std::endl << std::endl;
   std::cout << "Options:" << std::endl;
-  std::cout << "     -h:                     Show this help." << std::endl;
-  std::cout << "     -k:                     Show used keypoints." << std::endl;
+  std::cout << "     -h:                     显示此帮助." << std::endl;
+  std::cout << "     -k:                     Show used keypoints显示使用的关键点." << std::endl;
   std::cout << "     -c:                     显示已用过的对应关系." << std::endl;
   std::cout << "     -r:                     计算模型的云分辨率并乘以" << std::endl;
   std::cout << "                             该值给出的每个半径." << std::endl;
@@ -199,12 +199,12 @@ main (int argc, char *argv[])
       cg_size_    *= resolution;
     }
 
-    std::cout << "Model resolution:       " << resolution << std::endl;
-    std::cout << "Model sampling size:    " << model_ss_ << std::endl;
-    std::cout << "Scene sampling size:    " << scene_ss_ << std::endl;
-    std::cout << "LRF support radius:     " << rf_rad_ << std::endl;
-    std::cout << "SHOT descriptor radius: " << descr_rad_ << std::endl;
-    std::cout << "Clustering bin size:    " << cg_size_ << std::endl << std::endl;
+    std::cout << "Model resolution:模型分辨率:       " << resolution << std::endl;
+    std::cout << "Model sampling size:模型抽样大小:    " << model_ss_ << std::endl;
+    std::cout << "Scene sampling size:场景采样大小:    " << scene_ss_ << std::endl;
+    std::cout << "LRF support radius:LRF 支撑半径:     " << rf_rad_ << std::endl;
+    std::cout << "SHOT descriptor radius:SHOT 半径描述符： " << descr_rad_ << std::endl;
+    std::cout << "Clustering bin size:聚类箱大小：    " << cg_size_ << std::endl << std::endl;
   }
 
   //
@@ -321,7 +321,7 @@ main (int argc, char *argv[])
     //clusterer.cluster (clustered_corrs);
     clusterer.recognize (rototranslations, clustered_corrs);
   }
-  else // 使用 几何一致性
+  else // 使用 几何一致性 GC
   {
     pcl::GeometricConsistencyGrouping<PointType, PointType> gc_clusterer;
     gc_clusterer.setGCSize (cg_size_);
