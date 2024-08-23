@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 
 import ImageProvider 1.0
+import Model 1.0
 
 Window {
     height: 480
@@ -31,23 +32,43 @@ Window {
             height: 200
             width: 200
 
-            Switch {
-                id: _switch
 
-                text: qsTr("打开摄像头")
+            Switch {
+                id: _switch1
+
+                text: qsTr("打开摄像头1")
 
                 onCheckedChanged: {
-                    if (_switch.checked) {
-                        console.log("打开摄像头");
+                    if (_switch1.checked) {
+                        console.log("打开摄像头1");
                         myImageProvider.openCamera(0);
                     } else {
-                        console.log("关闭摄像头");
+                        console.log("关闭摄像头1");
                     }
-                }
 
+
+                }
                 ImageProvider{
                     id: myImageProvider
                 }
+            }
+
+
+
+            Switch {
+                id: _switch2
+
+                text: qsTr("打开摄像头2")
+
+                onCheckedChanged: {
+                    if (_switch2.checked) {
+                        console.log("打开摄像头2");
+                        myImageProviderQML.openCamera(0);
+                    } else {
+                        console.log("关闭摄像头2");
+                    }
+                }
+
             }
             Row {
                 id: row1
@@ -66,7 +87,11 @@ Window {
                     text: qsTr("选择模型")
 
                     onClicked: {
-                        let filePath = fileDialog.open();
+                        fileDialog.open();
+                    }
+
+                    Model{
+                        id:model
                     }
 
                     FileDialog {
@@ -77,6 +102,7 @@ Window {
 
                         onAccepted: {
                             textField.text = fileDialog.currentFile;
+                            model.modelPath = fileDialog.currentFile;
                             console.log(fileDialog.currentFile);
                         }
                         onRejected: {

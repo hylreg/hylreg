@@ -4,6 +4,8 @@ project(Test VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
+#set(QT_ASSUME_STDERR_HAS_CONSOLE ON)
+
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick Widgets)
 find_package(OpenCV REQUIRED)
@@ -24,6 +26,7 @@ qt_add_qml_module(appTest
         Main.qml
         RESOURCES resource.qrc
         SOURCES imageprovider.h imageprovider.cpp
+        SOURCES model.h model.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

@@ -2,19 +2,28 @@
 #include <QQmlApplicationEngine>
 #include <QQuickImageProvider>
 #include "imageprovider.h"
+#include "model.h"
+#include <QQmlContext>
+
 
 
 int main(int argc, char *argv[])
 {
-
-    qmlRegisterType<ImageProvider>("ImageProvider",1,0,"ImageProvider");
-
 
 
 
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    // 注册新类型到 QML
+    qmlRegisterType<ImageProvider>("ImageProvider",1,0,"ImageProvider");
+    qmlRegisterType<Model>("Model",1,0,"Model");
+
+    // 以类的实例形式引入
+    ImageProvider *myImageProvider = new ImageProvider;
+    engine.rootContext()->setContextProperty("myImageProviderQML", myImageProvider);
+
 
     QObject::connect(
         &engine,
