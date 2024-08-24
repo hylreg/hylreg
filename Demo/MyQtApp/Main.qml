@@ -12,6 +12,25 @@ Window {
     visible: true
     width: 640
 
+    Model{
+        id:model
+    }
+    ImageProvider{
+        id: myImageProvider
+    }
+
+    Connections{
+        target: myImageProviderQML
+        function onUpdataImgChanged(){
+            // console.log("oncallQmlRefeshImg:接收到图像")
+            image.source = ""
+            image.source = "image://myImage"
+        }
+    }
+
+
+
+
     Row {
         id: row
 
@@ -22,14 +41,18 @@ Window {
             id: image
 
             fillMode: Image.PreserveAspectFit
-            height: 200
-            source: "qrc:/res/SSD.png"
-            width: 200
+            height: 400
+            cache: false
+            source: ""
+            // source: "qrc:/res/SSD.png"
+            // source: "image://myImage"
+            width: 400
         }
+
         Column {
             id: column
 
-            height: 200
+            height: 100
             width: 200
 
 
@@ -45,11 +68,6 @@ Window {
                     } else {
                         console.log("关闭摄像头1");
                     }
-
-
-                }
-                ImageProvider{
-                    id: myImageProvider
                 }
             }
 
@@ -73,7 +91,7 @@ Window {
             Row {
                 id: row1
 
-                height: 200
+                height: 50
                 width: 200
 
                 TextField {
@@ -90,9 +108,7 @@ Window {
                         fileDialog.open();
                     }
 
-                    Model{
-                        id:model
-                    }
+
 
                     FileDialog {
                         id: fileDialog
@@ -101,14 +117,70 @@ Window {
                         title: "Select a File"
 
                         onAccepted: {
-                            textField.text = fileDialog.currentFile;
-                            model.modelPath = fileDialog.currentFile;
-                            console.log(fileDialog.currentFile);
+                            textField.text = fileDialog.currentFile.toString().replace("file:///", "");
+                            console.log(myImageProviderQML.getOnnxpath());
+
+                            // model.modelPath = fileDialog.currentFile.toString().replace("file:///", "");
+                            myImageProviderQML.setOnnxpath(model.modelPath = fileDialog.currentFile.toString().replace("file:///", ""));
+                            myImageProvider.setOnnxpath(model.modelPath = fileDialog.currentFile.toString().replace("file:///", ""));
+
+                            console.log(myImageProviderQML.getOnnxpath());
                         }
                         onRejected: {
                             console.log("File selection was canceled");
                         }
                     }
+                }
+            }
+            Row {
+                id: row12
+
+                height: 50
+                width: 200
+
+                TextField {
+                    id: textField2
+
+                    placeholderText: qsTr("类别路径")
+                }
+                Button {
+                    id: button2
+
+                    text: qsTr("选择类别")
+
+                    onClicked: {
+                        fileDialog2.open();
+                    }
+
+
+
+                    FileDialog {
+                        id: fileDialog2
+
+                        nameFilters: ["All Files (*.*)", "Text Files (*.txt)", "Images (*.png *.jpg *.jpeg)"]
+                        title: "Select a File"
+
+                        onAccepted: {
+                            textField2.text = fileDialog2.currentFile.toString().replace("file:///", "");
+                            // model.classNamePath = fileDialog2.currentFile.toString().replace("file:///", "");
+                            myImageProviderQML.setLabels_txt_file (fileDialog2.currentFile.toString().replace("file:///", ""));
+                            myImageProvider.setLabels_txt_file(model.modelPath = fileDialog2.currentFile.toString().replace("file:///", ""));
+
+                            console.log(fileDialog2.currentFile.toString().replace("file:///", ""));
+                        }
+                        onRejected: {
+                            console.log("File selection was canceled");
+                        }
+                    }
+                }
+            }
+            Button{
+                id: button1
+                text: qsTr("开始识别")
+                onClicked: {
+                    model.startChanged();
+                    myImageProvider.startChanged()
+
                 }
             }
         }

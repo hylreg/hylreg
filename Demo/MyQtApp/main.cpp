@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
     // 以类的实例形式引入
     ImageProvider *myImageProvider = new ImageProvider;
     engine.rootContext()->setContextProperty("myImageProviderQML", myImageProvider);
+    // engine.addImageProvider("myImageProvider1", myImageProvider);
+    engine.addImageProvider(QLatin1String("myImage"), myImageProvider);
+
 
 
     QObject::connect(
