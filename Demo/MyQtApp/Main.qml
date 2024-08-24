@@ -105,6 +105,22 @@ Window {
 
             }
 
+            Switch {
+                id: _switch4
+
+                text: qsTr("打开线程池摄像头")
+
+                onCheckedChanged: {
+                    if (_switch4.checked) {
+                        threadController.startThread()
+                        console.log("打开线程池摄像头");
+                    } else {
+                        console.log("关闭线程池摄像头");
+                    }
+                }
+
+            }
+
             Row {
                 id: row1
 

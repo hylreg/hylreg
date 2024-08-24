@@ -30,7 +30,7 @@ qt_add_qml_module(appTest
         RESOURCES resource.qrc
         SOURCES imageprovider.h imageprovider.cpp
         SOURCES model.h model.cpp
-        # SOURCES mythreadpool.h mythreadpool.cpp
+        SOURCES mythreadpool.h mythreadpool.cpp
         SOURCES mythread.h mythread.cpp
         SOURCES threadcontroller.h threadcontroller.cpp
 )

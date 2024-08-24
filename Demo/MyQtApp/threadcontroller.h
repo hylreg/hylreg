@@ -4,13 +4,14 @@
 #include <QObject>
 #include <QThread>
 #include "MyThread.h"
+#include "mythreadpool.h"
+
 
 class ThreadController : public QObject
 {
     Q_OBJECT
 public:
     explicit ThreadController(QObject *parent = nullptr);
-    // Q_INVOKABLE void startThread(); // 公开槽
 
 signals:
     void startThread();
