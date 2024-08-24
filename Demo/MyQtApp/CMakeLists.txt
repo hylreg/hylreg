@@ -17,9 +17,6 @@ qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(appTest
         main.cpp
-        imageProvider.cpp
-        imageProvider.h
-
 )
 
 qt_add_qml_module(appTest
@@ -33,6 +30,8 @@ qt_add_qml_module(appTest
         SOURCES mythreadpool.h mythreadpool.cpp
         SOURCES mythread.h mythread.cpp
         SOURCES threadcontroller.h threadcontroller.cpp
+        RESOURCES
+        QML_FILES
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
