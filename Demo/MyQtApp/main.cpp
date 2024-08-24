@@ -4,13 +4,15 @@
 #include "imageprovider.h"
 #include "model.h"
 #include <QQmlContext>
+#include <mythread.h>
+#include <QThread>
+#include <threadcontroller.h>
 
 
 
 int main(int argc, char *argv[])
 {
-
-
+    qDebug() << "主线程对象的地址: " << QThread::currentThread();
 
     QGuiApplication app(argc, argv);
 
@@ -26,6 +28,8 @@ int main(int argc, char *argv[])
     // engine.addImageProvider("myImageProvider1", myImageProvider);
     engine.addImageProvider(QLatin1String("myImage"), myImageProvider);
 
+    ThreadController controller;
+    engine.rootContext()->setContextProperty("threadController", &controller);
 
 
     QObject::connect(

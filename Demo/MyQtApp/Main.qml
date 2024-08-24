@@ -88,6 +88,23 @@ Window {
                 }
 
             }
+
+            Switch {
+                id: _switch3
+
+                text: qsTr("打开线程摄像头")
+
+                onCheckedChanged: {
+                    if (_switch3.checked) {
+                        threadController.startThread()
+                        console.log("打开线程摄像头");
+                    } else {
+                        console.log("关闭线程摄像头");
+                    }
+                }
+
+            }
+
             Row {
                 id: row1
 

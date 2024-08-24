@@ -30,6 +30,9 @@ qt_add_qml_module(appTest
         RESOURCES resource.qrc
         SOURCES imageprovider.h imageprovider.cpp
         SOURCES model.h model.cpp
+        # SOURCES mythreadpool.h mythreadpool.cpp
+        SOURCES mythread.h mythread.cpp
+        SOURCES threadcontroller.h threadcontroller.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
