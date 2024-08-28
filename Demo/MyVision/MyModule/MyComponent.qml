@@ -3,7 +3,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material
-import QtQuick.Studio.DesignEffects
 import QtQuick.Layouts
 
 Rectangle {
@@ -13,6 +12,9 @@ Rectangle {
 
     // Material.theme: Material.Light // 使用Material主题
     // Material.accent: Material.Blue // 设置主题的强调色（影响选中项颜色）
+
+    property int fontSize10 : 10
+    property int fontSize15 : 15
 
 
     Row {
@@ -152,7 +154,7 @@ Rectangle {
                         text: qsTr("OnenCV DNN")
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
-                        font.pointSize: 10
+                        font.pointSize: root.fontSize15
                     }
 
                     CheckBox {
@@ -160,7 +162,7 @@ Rectangle {
                         text: qsTr("OpenVINO")
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
-                        font.pointSize: 10
+                        font.pointSize: root.fontSize15
                     }
 
                     CheckBox {
@@ -168,7 +170,7 @@ Rectangle {
                         text: qsTr("ONNXRUNTIME")
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
-                        font.pointSize: 10
+                        font.pointSize: root.fontSize15
                     }
                 }
             }
@@ -200,11 +202,12 @@ Rectangle {
                             anchors.verticalCenter: spinBox.verticalCenter
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
-                            font.pointSize: 10
+                            font.pointSize:root.fontSize10
                         }
 
                         SpinBox {
                             id: spinBox
+                            font.pointSize: 15
                             focus: false
 
 
@@ -228,7 +231,7 @@ Rectangle {
                             text: qsTr("Socre：")
                             anchors.verticalCenter: spinBox1.verticalCenter
                             verticalAlignment: Text.AlignVCenter
-                            font.pointSize: 10
+                            font.pointSize: root.fontSize10
                         }
 
                         SpinBox {
@@ -250,7 +253,7 @@ Rectangle {
                             text: qsTr("NMS：")
                             anchors.verticalCenter: spinBox2.verticalCenter
                             verticalAlignment: Text.AlignVCenter
-                            font.pointSize: 10
+                            font.pointSize: root.fontSize10
                         }
 
                         SpinBox {
@@ -281,7 +284,7 @@ Rectangle {
                         text: qsTr("显示Box")
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
-                        font.pointSize: 10
+                        font.pointSize:root.fontSize15
                     }
 
                     CheckBox {
@@ -289,7 +292,7 @@ Rectangle {
                         text: qsTr("显示FPS")
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
-                        font.pointSize: 10
+                        font.pointSize:root.fontSize15
                     }
 
                     CheckBox {
@@ -297,7 +300,7 @@ Rectangle {
                         text: qsTr("显示类别")
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        font.pointSize: 10
+                        font.pointSize: root.fontSize15
                     }
                 }
             }
@@ -380,6 +383,14 @@ Rectangle {
 
             }
 
+            Switch {
+                id: _switch
+                text: qsTr("打开摄像头")
+                anchors.top: rowLayout.bottom
+                anchors.topMargin: 0
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
 
         }
 
@@ -390,11 +401,14 @@ Rectangle {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.leftMargin: 30
+            anchors.rightMargin: 30
+            anchors.topMargin: 30
+            anchors.bottomMargin: 30
 
             Image {
                 id: image
                 anchors.fill: parent
-                source: "qrc:/qtquickplugin/images/template_image.png"
+                source: "qrc:/res/SSD.png"
                 fillMode: Image.PreserveAspectFit
             }
         }

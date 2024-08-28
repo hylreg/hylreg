@@ -1,9 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQuickStyle>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    // QQuickStyle::setStyle("Material");
 
     QQmlApplicationEngine engine;
     QObject::connect(
@@ -12,7 +15,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("QML", "Main");
+    engine.loadFromModule("MyVision", "Main");
 
     return app.exec();
 }
