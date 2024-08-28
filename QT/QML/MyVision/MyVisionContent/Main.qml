@@ -124,7 +124,7 @@ Rectangle {
 
             GroupBox {
                 id: groupBox1
-                height: 100
+                height: 120
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: groupBox.bottom
@@ -137,6 +137,7 @@ Rectangle {
 
                 RowLayout {
                     id: rowLayout3
+                    anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
