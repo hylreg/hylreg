@@ -18,19 +18,11 @@ public:
         return &s_instance;
     }
 
-    QString status() const;
-    void setStatus(const QString &newStatus);
-
-    Q_INVOKABLE QString getStatusInfo() const;
 signals:
 
-    void statusChanged();
 
 private:
     Vision() {}  // 私有构造函数，防止外部实例化
-
-    QString m_status;
-    Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY statusChanged FINAL)
 };
 
 #endif // VISION_H

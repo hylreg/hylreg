@@ -9,33 +9,9 @@ Window {
     visible: true
     title: qsTr("MyVision")
 
-    Text {
-        id: statusText
-        text: Vision.status
-        anchors.centerIn: parent
+    MyComponent {
+        id:myComponent
     }
-
-    Button {
-        text: "Update Status"
-        anchors.bottom: statusText.bottom
-        anchors.verticalCenterOffset: 40
-        onClicked: {
-            Vision.status = "Updated!"
-        }
-    }
-
-    Button {
-        text: "Get Status Info"
-        anchors.bottom: statusText.bottom
-        anchors.verticalCenterOffset: 80
-        onClicked: {
-            console.log(Vision.getStatusInfo())
-        }
-    }
-
-    // MyComponent {
-    //     id:myComponent
-    // }
 
 
 }

@@ -612,19 +612,17 @@ Rectangle {
             anchors.bottomMargin: 30
 
 
-            Connections{
-                target: myImageProviderQML
-                function onUpdataImgChanged(){
-                    image.source = ""
-                    image.source = "image://myImage"
-                }
-            }
-
             Image {
-                id: image
+                id: videoFeed
+                source: "image://videoframe/"
                 anchors.fill: parent
-                source: ""
                 fillMode: Image.PreserveAspectFit
+                Timer {
+                    interval: 30
+                    running: true
+                    repeat: true
+                    onTriggered: videoFeed.source = "image://videoframe/" + Math.random()
+                }
             }
         }
     }

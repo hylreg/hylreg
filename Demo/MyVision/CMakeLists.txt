@@ -5,6 +5,7 @@ project(MyVision VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
 
+find_package(OpenCV REQUIRED)
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2)
 
 qt_standard_project_setup(REQUIRES 6.5)
@@ -21,6 +22,9 @@ qt_add_qml_module(appMyVision
         QML_FILES MyModule/MyComponent.qml
         RESOURCES res.qrc
         SOURCES vision.h vision.cpp
+        SOURCES imageprocessingtask.h imageprocessingtask.cpp
+        SOURCES videoframeprovider.h videoframeprovider.cpp
+
 
 
 )
@@ -38,6 +42,7 @@ set_target_properties(appMyVision PROPERTIES
 
 target_link_libraries(appMyVision
     PRIVATE Qt6::Quick Qt6::QuickControls2
+        ${OpenCV_LIBS}
 )
 
 include(GNUInstallDirs)
