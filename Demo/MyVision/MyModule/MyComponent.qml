@@ -2,8 +2,10 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Controls.Material
+import QtQuick.Controls.Imagine
 import QtQuick.Layouts
+import QtQuick.Dialogs
+
 
 Rectangle {
     id: root
@@ -36,8 +38,6 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.leftMargin: 0
                 anchors.rightMargin: 0
-
-
 
 
                 TabButton {
@@ -90,13 +90,31 @@ Rectangle {
                             id: textField
                             width: 500
                             Layout.fillWidth: true
-                            placeholderText: qsTr("Text Field")
                         }
 
                         Button {
                             id: button
                             text: qsTr("选择")
                             font.pointSize: 15
+
+                            onClicked: {
+                                fileDialog.open()
+                            }
+
+                            FileDialog {
+                                id: fileDialog
+
+                                nameFilters: ["All Files (*.*)"]
+                                title: "选择权重文件"
+
+                                onAccepted: {
+                                    textField.text = fileDialog.currentFile.toString().replace("file:///", "");
+                                }
+                                onRejected: {
+                                    console.log("File selection was canceled");
+                                }
+                            }
+
                         }
                     }
 
@@ -114,13 +132,30 @@ Rectangle {
                         TextField {
                             id: textField1
                             Layout.fillWidth: true
-                            placeholderText: qsTr("Text Field")
                         }
 
                         Button {
                             id: button1
                             text: qsTr("选择")
                             font.pointSize: 15
+
+                            onClicked: {
+                                fileDialog1.open();
+                            }
+
+                            FileDialog {
+                                id: fileDialog1
+
+                                nameFilters: ["All Files (*.*)"]
+                                title: "选择类别文件"
+
+                                onAccepted: {
+                                    textField1.text = fileDialog.currentFile.toString().replace("file:///", "");
+                                }
+                                onRejected: {
+                                    console.log("File selection was canceled");
+                                }
+                            }
                         }
                     }
                 }
@@ -139,6 +174,8 @@ Rectangle {
                 title: qsTr("部署平台")
 
 
+
+
                 RowLayout {
                     id: rowLayout3
                     anchors.verticalCenter: parent.verticalCenter
@@ -149,12 +186,21 @@ Rectangle {
                     anchors.rightMargin: 0
                     anchors.topMargin: 0
 
+                    property int selectedIndex: -1
+
                     CheckBox {
                         id: checkBox
                         text: qsTr("OnenCV DNN")
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
                         font.pointSize: root.fontSize15
+
+                        checked: rowLayout3.selectedIndex === 0
+                        onCheckedChanged: {
+                            if (checked) {
+                                rowLayout3.selectedIndex = 0
+                            }
+                        }
                     }
 
                     CheckBox {
@@ -163,6 +209,14 @@ Rectangle {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
                         font.pointSize: root.fontSize15
+
+                        checked: rowLayout3.selectedIndex === 1
+                        onCheckedChanged: {
+                            if (checked) {
+
+                                rowLayout3.selectedIndex = 1
+                            }
+                        }
                     }
 
                     CheckBox {
@@ -171,6 +225,13 @@ Rectangle {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
                         font.pointSize: root.fontSize15
+
+                        checked: rowLayout3.selectedIndex === 2
+                        onCheckedChanged: {
+                            if (checked) {
+                                rowLayout3.selectedIndex = 2
+                            }
+                        }
                     }
                 }
             }
@@ -207,10 +268,37 @@ Rectangle {
 
                         SpinBox {
                             id: spinBox
-                            font.pointSize: 15
-                            focus: false
+                            height: 40
+                            font.pointSize: root.fontSize15
 
+                            from: 0
+                            value: decimalToInt(0.6)
+                            to: decimalToInt(1)
+                            stepSize: decimalFactor/decimalFactor
+                            editable: true
 
+                            property real decimals: 2
+                            property real realValue: value / decimalFactor
+                            readonly property int decimalFactor: Math.pow(10, decimals)
+
+                            function decimalToInt(decimal) {
+                                return decimal * decimalFactor
+                            }
+
+                            validator: DoubleValidator {
+                                bottom: Math.min(spinBox.from, spinBox.to)
+                                top:  Math.max(spinBox.from, spinBox.to)
+                                decimals: spinBox.decimals
+                                notation: DoubleValidator.StandardNotation
+                            }
+
+                            textFromValue: function(value, locale) {
+                                return Number(value / decimalFactor).toLocaleString(locale, 'f', spinBox.decimals)
+                            }
+
+                            valueFromText: function(text, locale) {
+                                return Math.round(Number.fromLocaleString(locale, text) * decimalFactor)
+                            }
 
                         }
 
@@ -236,6 +324,38 @@ Rectangle {
 
                         SpinBox {
                             id: spinBox1
+                            height: 40
+                            font.pointSize: root.fontSize15
+
+
+                            from: 0
+                            value: decimalToInt(0.6)
+                            to: decimalToInt(1)
+                            stepSize: decimalFactor/decimalFactor
+                            editable: true
+
+                            property real decimals: 2
+                            property real realValue: value / decimalFactor
+                            readonly property int decimalFactor: Math.pow(10, decimals)
+
+                            function decimalToInt(decimal) {
+                                return decimal * decimalFactor
+                            }
+
+                            validator: DoubleValidator {
+                                bottom: Math.min(spinBox.from, spinBox.to)
+                                top:  Math.max(spinBox.from, spinBox.to)
+                                decimals: spinBox.decimals
+                                notation: DoubleValidator.StandardNotation
+                            }
+
+                            textFromValue: function(value, locale) {
+                                return Number(value / decimalFactor).toLocaleString(locale, 'f', spinBox.decimals)
+                            }
+
+                            valueFromText: function(text, locale) {
+                                return Math.round(Number.fromLocaleString(locale, text) * decimalFactor)
+                            }
                         }
                     }
 
@@ -258,6 +378,38 @@ Rectangle {
 
                         SpinBox {
                             id: spinBox2
+                            height: 40
+                            font.pointSize: root.fontSize15
+
+
+                            from: 0
+                            value: decimalToInt(0.6)
+                            to: decimalToInt(1)
+                            stepSize: decimalFactor/decimalFactor
+                            editable: true
+
+                            property real decimals: 2
+                            property real realValue: value / decimalFactor
+                            readonly property int decimalFactor: Math.pow(10, decimals)
+
+                            function decimalToInt(decimal) {
+                                return decimal * decimalFactor
+                            }
+
+                            validator: DoubleValidator {
+                                bottom: Math.min(spinBox.from, spinBox.to)
+                                top:  Math.max(spinBox.from, spinBox.to)
+                                decimals: spinBox.decimals
+                                notation: DoubleValidator.StandardNotation
+                            }
+
+                            textFromValue: function(value, locale) {
+                                return Number(value / decimalFactor).toLocaleString(locale, 'f', spinBox.decimals)
+                            }
+
+                            valueFromText: function(text, locale) {
+                                return Math.round(Number.fromLocaleString(locale, text) * decimalFactor)
+                            }
                         }
                     }
                 }
@@ -285,6 +437,14 @@ Rectangle {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
                         font.pointSize:root.fontSize15
+
+                        onCheckStateChanged: {
+                            if(checkState){
+                                console.log("确认选中")
+                            }else{
+                                 console.log("取消选中")
+                            }
+                        }
                     }
 
                     CheckBox {
@@ -293,6 +453,14 @@ Rectangle {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
                         font.pointSize:root.fontSize15
+
+                        onCheckStateChanged: {
+                            if(checkState){
+                                console.log("确认选中")
+                            }else{
+                                 console.log("取消选中")
+                            }
+                        }
                     }
 
                     CheckBox {
@@ -301,6 +469,14 @@ Rectangle {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         font.pointSize: root.fontSize15
+
+                        onCheckStateChanged: {
+                            if(checkState){
+                                console.log("确认选中")
+                            }else{
+                                 console.log("取消选中")
+                            }
+                        }
                     }
                 }
             }
@@ -313,7 +489,7 @@ Rectangle {
                 anchors.top: groupBox3.bottom
                 anchors.topMargin: 0
                 font.pointSize: 20
-                title: qsTr("文件选择")
+                title: qsTr("选择Label")
 
                 ColumnLayout {
                     id: columnLayout1
@@ -338,7 +514,6 @@ Rectangle {
                             height: 40
                             anchors.verticalCenter: parent.verticalCenter
                             Layout.fillWidth: true
-                            placeholderText: qsTr("Text Field")
                         }
 
                         Button {
@@ -347,6 +522,24 @@ Rectangle {
                             text: qsTr("选择")
                             anchors.verticalCenter: parent.verticalCenter
                             font.pointSize: 15
+
+                            onClicked: {
+                                fileDialog2.open()
+                            }
+
+                            FileDialog {
+                                id: fileDialog2
+
+                                nameFilters: ["All Files (*.*)"]
+                                title: "选择权重文件"
+
+                                onAccepted: {
+                                    textField2.text = fileDialog2.currentFile.toString().replace("file:///", "");
+                                }
+                                onRejected: {
+                                    console.log("File selection was canceled");
+                                }
+                            }
                         }
                     }
                 }
@@ -365,6 +558,9 @@ Rectangle {
                     text: qsTr("保存/应用")
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     font.pointSize: 15
+
+                    onClicked: {
+                    }
                 }
 
                 Button {
@@ -372,6 +568,8 @@ Rectangle {
                     text: qsTr("推理运行")
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     font.pointSize: 15
+                    onClicked: {
+                    }
                 }
 
                 Button {
@@ -379,6 +577,8 @@ Rectangle {
                     text: qsTr("结束推理")
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     font.pointSize: 15
+                    onClicked: {
+                    }
                 }
 
             }
@@ -389,6 +589,12 @@ Rectangle {
                 anchors.top: rowLayout.bottom
                 anchors.topMargin: 0
                 anchors.horizontalCenter: parent.horizontalCenter
+
+                onStateChanged: {
+                    if(checked){
+                    }else{
+                    }
+                }
             }
 
 
@@ -405,10 +611,19 @@ Rectangle {
             anchors.topMargin: 30
             anchors.bottomMargin: 30
 
+
+            Connections{
+                target: myImageProviderQML
+                function onUpdataImgChanged(){
+                    image.source = ""
+                    image.source = "image://myImage"
+                }
+            }
+
             Image {
                 id: image
                 anchors.fill: parent
-                source: "qrc:/res/SSD.png"
+                source: ""
                 fillMode: Image.PreserveAspectFit
             }
         }
