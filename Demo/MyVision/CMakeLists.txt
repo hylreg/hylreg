@@ -20,6 +20,7 @@ qt_add_qml_module(appMyVision
         Main.qml
         QML_FILES MyModule/MyComponent.qml
         RESOURCES res.qrc
+        SOURCES vision.h vision.cpp
 
 
 )
