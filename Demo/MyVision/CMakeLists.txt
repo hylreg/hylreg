@@ -22,10 +22,7 @@ qt_add_qml_module(appMyVision
         QML_FILES MyModule/MyComponent.qml
         RESOURCES res.qrc
         SOURCES vision.h vision.cpp
-        SOURCES imageprocessingtask.h imageprocessingtask.cpp
         SOURCES videoframeprovider.h videoframeprovider.cpp
-
-
 
 )
 
