@@ -592,7 +592,6 @@ Rectangle {
 
                 onCheckedChanged: {
                     if(checked){
-                        console.log(checked)
                         threadManager.startThreadWork();
                     }else{
                     }

@@ -23,8 +23,9 @@ qt_add_qml_module(appMyVision
         RESOURCES res.qrc
         SOURCES vision.h vision.cpp
         SOURCES videoframeprovider.h videoframeprovider.cpp
-        SOURCES worker.h worker.cpp
+        # SOURCES worker.h worker.cpp
         SOURCES threadmanager.h threadmanager.cpp
+        SOURCES mythread.h mythread.cpp
 
 )
 

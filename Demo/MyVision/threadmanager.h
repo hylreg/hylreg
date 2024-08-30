@@ -3,8 +3,7 @@
 #define THREADMANAGER_H
 
 #include <QObject>
-#include <QThread>
-#include "Worker.h"
+#include "MyThread.h"
 
 class ThreadManager : public QObject {
     Q_OBJECT
@@ -15,8 +14,7 @@ public:
     Q_INVOKABLE void startThreadWork();
 
 private:
-    QThread *thread;
-    Worker *worker;
+    MyThread *thread;
 };
 
 #endif // THREADMANAGER_H
