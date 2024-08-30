@@ -1,20 +1,11 @@
-// Worker.h
 #ifndef WORKER_H
 #define WORKER_H
 
-#include <QObject>
+#include <QRunnable>
 
-class Worker : public QObject {
-    Q_OBJECT
+class Worker : public QRunnable {
 public:
-    explicit Worker(QObject *parent = nullptr);
-    ~Worker();
-
-public slots:
-    void doWork();
-
-signals:
-    void workFinished();
+    void run() override;
 };
 
 #endif // WORKER_H

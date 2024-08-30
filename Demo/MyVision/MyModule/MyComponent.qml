@@ -592,7 +592,7 @@ Rectangle {
 
                 onCheckedChanged: {
                     if(checked){
-                        threadManager.startThreadWork();
+                        threadManager.startTask();
                     }else{
                     }
                 }

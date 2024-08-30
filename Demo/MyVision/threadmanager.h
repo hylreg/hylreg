@@ -1,20 +1,21 @@
-// ThreadManager.h
 #ifndef THREADMANAGER_H
 #define THREADMANAGER_H
 
 #include <QObject>
-#include "MyThread.h"
+#include <QThreadPool>
+
+class Worker; // Forward declaration
 
 class ThreadManager : public QObject {
     Q_OBJECT
 public:
     explicit ThreadManager(QObject *parent = nullptr);
-    ~ThreadManager();
 
-    Q_INVOKABLE void startThreadWork();
+public slots:
+    void startTask();
 
 private:
-    MyThread *thread;
+    QThreadPool threadPool;
 };
 
 #endif // THREADMANAGER_H
