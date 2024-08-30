@@ -590,8 +590,10 @@ Rectangle {
                 anchors.topMargin: 0
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                onStateChanged: {
+                onCheckedChanged: {
                     if(checked){
+                        console.log(checked)
+                        threadManager.startThreadWork();
                     }else{
                     }
                 }

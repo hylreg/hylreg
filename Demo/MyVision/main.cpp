@@ -4,6 +4,9 @@
 #include "vision.h"
 #include "VideoFrameProvider.h"
 
+#include <QQmlContext>
+#include "ThreadManager.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +21,9 @@ int main(int argc, char *argv[])
     // 注册 VideoFrameProvider 给 QML 使用
     VideoFrameProvider *videoFrameProvider = new VideoFrameProvider();
     engine.addImageProvider(QLatin1String("videoframe"), videoFrameProvider);
+
+    ThreadManager manager;  // 创建线程管理器
+    engine.rootContext()->setContextProperty("threadManager", &manager);
 
 
 
