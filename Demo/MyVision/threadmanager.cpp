@@ -12,7 +12,7 @@ ThreadManager::~ThreadManager() {
     delete threadPool;
 }
 
-void ThreadManager::startThreadWork() {
+void ThreadManager::startTask() {
     Worker *worker = new Worker();
     // 使用 lambda 确保 worker 在任务完成后被正确删除
     threadPool->start(worker);

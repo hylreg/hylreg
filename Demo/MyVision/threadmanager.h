@@ -11,7 +11,11 @@ public:
     explicit ThreadManager(QObject *parent = nullptr);
     ~ThreadManager();
 
-    Q_INVOKABLE void startThreadWork();
+
+    // Q_INVOKABLE void startThreadWork();
+
+public slots:
+    void startTask();
 
 private:
     QThreadPool *threadPool;
