@@ -5,7 +5,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Imagine
 import QtQuick.Layouts
 import QtQuick.Dialogs
-import MyApp 1.0
+// import MyApp 1.0
 
 
 Rectangle {
