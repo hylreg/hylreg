@@ -42,3 +42,31 @@ void ModelManager::setLabelPath(const QString &newLabelPath)
     m_labelPath = newLabelPath;
     emit labelPathChanged();
 }
+
+QString ModelManager::deployPlatform() const
+{
+    return m_deployPlatform;
+}
+
+void ModelManager::setDeployPlatform(const QString &newDeployPlatform)
+{
+    if (m_deployPlatform == newDeployPlatform)
+        return;
+    m_deployPlatform = newDeployPlatform;
+    emit deployPlatformChanged();
+}
+
+int ModelManager::checkBoxState() const
+{
+    return m_checkBoxState;
+}
+
+void ModelManager::setCheckBoxState(int newCheckBoxState)
+{
+    if (m_checkBoxState == newCheckBoxState)
+        return;
+    m_checkBoxState = newCheckBoxState;
+    emit checkBoxStateChanged();
+}
+
+

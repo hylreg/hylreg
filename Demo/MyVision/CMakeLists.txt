@@ -28,6 +28,7 @@ qt_add_qml_module(appMyVision
         SOURCES cameraworker.h cameraworker.cpp
         SOURCES imageprovider.h imageprovider.cpp
         SOURCES modelmanager.h modelmanager.cpp
+        SOURCES settingsmanager.h settingsmanager.cpp
         # SOURCES mythread.h mythread.cpp
 
 )

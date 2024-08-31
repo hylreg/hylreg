@@ -5,6 +5,8 @@
 #include <QQmlEngine>
 #include <modelmanager.h>
 #include <threadmanager.h>
+// #include <QSettings>
+#include <settingsmanager.h>
 
 class Vision : public QObject
 {
@@ -27,20 +29,28 @@ public:
     ThreadManager *threadManager() const;
     void setThreadManager(ThreadManager *newThreadManager);
 
+
+
+    SettingsManager *getSettingsManager() const;
+    void setSettingsManager(SettingsManager *newSettingsManager);
+
 signals:
 
     void modelMangerChanged();
-
-
     void threadManagerChanged();
+    void settingsManagerChanged();
 
 private:
     Vision() {}  // 私有构造函数，防止外部实例化
 
     ModelManager *m_modelManger;
     ThreadManager *m_threadManager;
+    SettingsManager *settingsManager;
+
+
     Q_PROPERTY(ModelManager *modelManger READ modelManger WRITE setModelManger NOTIFY modelMangerChanged FINAL)
     Q_PROPERTY(ThreadManager *threadManager READ threadManager WRITE setThreadManager NOTIFY threadManagerChanged FINAL)
+    Q_PROPERTY(SettingsManager *settingsManager READ getSettingsManager WRITE setSettingsManager NOTIFY settingsManagerChanged FINAL)
 };
 
 #endif // VISION_H

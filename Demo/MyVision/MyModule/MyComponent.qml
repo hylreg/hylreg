@@ -113,7 +113,8 @@ Rectangle {
 
                                 onAccepted: {
                                     textField.text = fileDialog.currentFile.toString().replace("file:///", "");
-                                    Vision.modelManger.setModelPath( fileDialog.currentFile.toString().replace("file:///", ""))
+                                    MyApp.settingsManager.setValue("ModelPath", textField.text)
+                                    MyApp.modelManger.setModelPath(textField.text)
                                 }
                                 onRejected: {
                                     console.log("File selection was canceled");
@@ -159,7 +160,8 @@ Rectangle {
 
                                 onAccepted: {
                                     textField1.text = fileDialog1.currentFile.toString().replace("file:///", "");
-                                    Vision.modelManger.setClassPath( fileDialog1.currentFile.toString().replace("file:///", ""))
+                                    MyApp.settingsManager.setValue("ClassPath", textField1.text)
+                                    MyApp.modelManger.setModelPath(textField1.text)
                                 }
                                 onRejected: {
                                     console.log("File selection was canceled");
@@ -208,7 +210,11 @@ Rectangle {
                         onCheckedChanged: {
                             if (checked) {
                                 rowLayout3.selectedIndex = 0
+                                MyApp.modelManger.setDeployPlatform("OnenCV DNN")
+                                MyApp.settingsManager.setValue("DeployPlatform", rowLayout3.selectedIndex)
+
                             }
+
                         }
                     }
 
@@ -222,8 +228,10 @@ Rectangle {
                         checked: rowLayout3.selectedIndex === 1
                         onCheckedChanged: {
                             if (checked) {
-
                                 rowLayout3.selectedIndex = 1
+                                MyApp.modelManger.setDeployPlatform("OpenVINO")
+                                MyApp.settingsManager.setValue("DeployPlatform", rowLayout3.selectedIndex)
+
                             }
                         }
                     }
@@ -239,6 +247,10 @@ Rectangle {
                         onCheckedChanged: {
                             if (checked) {
                                 rowLayout3.selectedIndex = 2
+                                MyApp.modelManger.setDeployPlatform("ONNXRUNTIME")
+                                MyApp.settingsManager.setValue("DeployPlatform", rowLayout3.selectedIndex)
+
+
                             }
                         }
                     }
@@ -311,6 +323,11 @@ Rectangle {
                                 return Math.round(Number.fromLocaleString(locale, text) * decimalFactor)
                             }
 
+                            onValueChanged: {
+                                MyApp.settingsManager.setValue("Conf", spinBox.value)
+
+                            }
+
                         }
 
 
@@ -367,6 +384,11 @@ Rectangle {
                             valueFromText: function(text, locale) {
                                 return Math.round(Number.fromLocaleString(locale, text) * decimalFactor)
                             }
+
+                            onValueChanged: {
+                                MyApp.settingsManager.setValue("Socre", spinBox1.value)
+
+                            }
                         }
                     }
 
@@ -421,6 +443,11 @@ Rectangle {
                             valueFromText: function(text, locale) {
                                 return Math.round(Number.fromLocaleString(locale, text) * decimalFactor)
                             }
+
+                            onValueChanged: {
+                                MyApp.settingsManager.setValue("NMS", spinBox2.value)
+
+                            }
                         }
                     }
                 }
@@ -438,9 +465,21 @@ Rectangle {
                 font.pointSize: 20
                 title: qsTr("显示设置")
 
+
+
                 RowLayout {
                     id: rowLayout5
                     anchors.fill: parent
+
+                    function updateState() {
+                        let state = 0;
+                        if (checkBox1.checked) state |= 1;  // 0b001
+                        if (checkBox2.checked) state |= 2;  // 0b010
+                        if (checkBox3.checked) state |= 4;  // 0b100
+                        MyApp.modelManger.setCheckBoxState(state)
+                        MyApp.settingsManager.setValue("DispalyState", state)
+
+                    }
 
                     CheckBox {
                         id: checkBox3
@@ -455,6 +494,7 @@ Rectangle {
                             }else{
                                  console.log("取消选中")
                             }
+                            rowLayout5.updateState()
                         }
                     }
 
@@ -468,9 +508,11 @@ Rectangle {
                         onCheckStateChanged: {
                             if(checkState){
                                 console.log("确认选中")
+
                             }else{
                                  console.log("取消选中")
                             }
+                            rowLayout5.updateState()
                         }
                     }
 
@@ -487,6 +529,7 @@ Rectangle {
                             }else{
                                  console.log("取消选中")
                             }
+                            rowLayout5.updateState()
                         }
                     }
                 }
@@ -548,7 +591,8 @@ Rectangle {
 
                                 onAccepted: {
                                     textField2.text = fileDialog2.currentFile.toString().replace("file:///", "");
-                                    Vision.modelManger.setLabelPath( fileDialog1.currentFile.toString().replace("file:///", ""))
+                                    MyApp.settingsManager.setValue("LabelPath", textField2.text)
+                                    MyApp.modelManger.setModelPath(textField2.text)
 
                                 }
                                 onRejected: {
@@ -585,7 +629,7 @@ Rectangle {
                     font.pointSize: 15
                     onClicked: {
                         _switch.checked = true
-                        Vision.threadManager.startCamera();
+                        MyApp.threadManager.startCamera();
                     }
                 }
 
@@ -596,7 +640,7 @@ Rectangle {
                     font.pointSize: 15
                     onClicked: {
                         _switch.checked = false
-                        Vision.threadManager.stopCamera()
+                        MyApp.threadManager.stopCamera()
                     }
                 }
 
@@ -611,9 +655,9 @@ Rectangle {
 
                 onCheckedChanged: {
                     if(checked){
-                        Vision.threadManager.startCamera();
+                        MyApp.threadManager.startCamera();
                     }else{
-                        Vision.threadManager.stopCamera()
+                        MyApp.threadManager.stopCamera()
                     }
                 }
             }

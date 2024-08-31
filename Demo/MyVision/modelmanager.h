@@ -18,6 +18,13 @@ public:
     Q_INVOKABLE QString labelPath() const;
     Q_INVOKABLE void setLabelPath(const QString &newLabelPath);
 
+    Q_INVOKABLE QString deployPlatform() const;
+    Q_INVOKABLE void setDeployPlatform(const QString &newDeployPlatform);
+
+
+    Q_INVOKABLE int checkBoxState() const;
+    Q_INVOKABLE void setCheckBoxState(int newCheckBoxState);
+
 signals:
 
     void modelPathChanged();
@@ -26,15 +33,25 @@ signals:
 
     void labelPathChanged();
 
+    void deployPlatformChanged();
+
+    void displaySettingsChanged();
+
+    void checkBoxStateChanged();
+
 private:
     QString m_modelPath;
     QString m_classPath;
     QString m_labelPath;
 
+    QString m_deployPlatform;
+    int m_checkBoxState;
 
     Q_PROPERTY(QString modelPath READ modelPath WRITE setModelPath NOTIFY modelPathChanged FINAL)
     Q_PROPERTY(QString classPath READ classPath WRITE setClassPath NOTIFY classPathChanged FINAL)
     Q_PROPERTY(QString labelPath READ labelPath WRITE setLabelPath NOTIFY labelPathChanged FINAL)
+    Q_PROPERTY(QString deployPlatform READ deployPlatform WRITE setDeployPlatform NOTIFY deployPlatformChanged FINAL)
+    Q_PROPERTY(int checkBoxState READ checkBoxState WRITE setCheckBoxState NOTIFY checkBoxStateChanged FINAL)
 };
 
 #endif // MODELMANAGER_H

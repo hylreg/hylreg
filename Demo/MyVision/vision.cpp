@@ -32,3 +32,15 @@ void Vision::setThreadManager(ThreadManager *newThreadManager)
     emit threadManagerChanged();
 }
 
+SettingsManager *Vision::getSettingsManager() const
+{
+    return settingsManager;
+}
+
+void Vision::setSettingsManager(SettingsManager *newSettingsManager)
+{
+    if (settingsManager == newSettingsManager)
+        return;
+    settingsManager = newSettingsManager;
+    emit settingsManagerChanged();
+}
