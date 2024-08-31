@@ -20,17 +20,21 @@ int main(int argc, char *argv[])
         QQmlApplicationEngine engine;
 
 
-    // 创建 Vision 对象作为顶级对象
+    // // 创建 Vision 对象作为顶级对象
+    // Vision *vision = Vision::create(nullptr, nullptr);
+    // // 创建 ModelManager 对象并设置到 Vision 中
+    // ModelManager *modelManager = new ModelManager();
+    // vision->setModelManger(modelManager);
+    // // 将 Vision 作为 QML 的根对象传递
+    // engine.rootContext()->setContextProperty("Vision", vision);
+
+    // 通过静态工厂函数注册 QML 单例
+    qmlRegisterSingletonType<Vision>("MyApp", 1, 0, "Vision", &Vision::create);
+    // 设置 Vision 的 ModelManager
     Vision *vision = Vision::create(nullptr, nullptr);
-    // 创建 ModelManager 对象并设置到 Vision 中
+    // 创建并设置 ModelManager 对象
     ModelManager *modelManager = new ModelManager();
     vision->setModelManger(modelManager);
-    // 将 Vision 作为 QML 的根对象传递
-    engine.rootContext()->setContextProperty("Vision", vision);
-
-    // // 通过静态工厂函数注册 QML 单例
-    // qmlRegisterSingletonType<Vision>("MyApp", 1, 0, "Vision", &Vision::create);
-
 
     // 创建 ImageProvider 实例并注册到 QML
     ImageProvider *provider = new ImageProvider();
