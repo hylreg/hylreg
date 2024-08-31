@@ -17,7 +17,6 @@ void CameraWorker::run() {
             continue;
         }
 
-
         // 转换到 QImage
         cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
 

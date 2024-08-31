@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Imagine
 import QtQuick.Layouts
 import QtQuick.Dialogs
+import MyApp 1.0
 
 
 Rectangle {
@@ -17,6 +18,7 @@ Rectangle {
 
     property int fontSize10 : 10
     property int fontSize15 : 15
+
 
 
     Row {
@@ -98,6 +100,7 @@ Rectangle {
                             font.pointSize: 15
 
                             onClicked: {
+                                // Vision.status
                                 fileDialog.open()
                             }
 
@@ -108,7 +111,10 @@ Rectangle {
                                 title: "选择权重文件"
 
                                 onAccepted: {
+
                                     textField.text = fileDialog.currentFile.toString().replace("file:///", "");
+                                    Vision.modelManger.setModelPath( fileDialog.currentFile.toString().replace("file:///", ""))
+                                    console.log(Vision.modelManger.modelPath)
                                 }
                                 onRejected: {
                                     console.log("File selection was canceled");

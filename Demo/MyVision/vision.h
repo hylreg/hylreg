@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQmlEngine>
+#include <modelmanager.h>
 
 class Vision : public QObject
 {
@@ -18,11 +19,28 @@ public:
         return &s_instance;
     }
 
+
+    ModelManager *modelManger() const;
+    void setModelManger(ModelManager *newModelManger);
+
+
+
+    QString *status() const;
+    void setStatus(QString *newStatus);
+
 signals:
 
+    void modelMangerChanged();
+
+    void statusChanged();
 
 private:
     Vision() {}  // 私有构造函数，防止外部实例化
+
+    ModelManager *m_modelManger;
+    QString *m_status;
+    Q_PROPERTY(ModelManager *modelManger READ modelManger WRITE setModelManger NOTIFY modelMangerChanged FINAL)
+    Q_PROPERTY(QString *status READ status WRITE setStatus NOTIFY statusChanged FINAL)
 };
 
 #endif // VISION_H
