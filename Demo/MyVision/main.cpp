@@ -2,9 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 #include "vision.h"
-#include "VideoFrameProvider.h"
-
 #include <QQmlContext>
+#include "ImageProvider.h"
 #include "ThreadManager.h"
 
 
@@ -18,12 +17,14 @@ int main(int argc, char *argv[])
     // 通过静态工厂函数注册 QML 单例
     qmlRegisterSingletonType<Vision>("com.example.vision", 1, 0, "Vision", &Vision::create);
 
-    // 注册 VideoFrameProvider 给 QML 使用
-    VideoFrameProvider *videoFrameProvider = new VideoFrameProvider();
-    engine.addImageProvider(QLatin1String("videoframe"), videoFrameProvider);
+    // 创建 ImageProvider 实例并注册到 QML
+    ImageProvider *provider = new ImageProvider();
+    // engine.rootContext()->setContextProperty("imageProvider", provider);
+    engine.addImageProvider("camera", provider);
 
-    ThreadManager manager;  // 创建线程管理器
-    engine.rootContext()->setContextProperty("threadManager", &manager);
+    // 创建 ThreadManager 实例并注册到 QML
+    ThreadManager *threadManager = new ThreadManager(provider);
+    engine.rootContext()->setContextProperty("threadManager", threadManager);
 
 
 

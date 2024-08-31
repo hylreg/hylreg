@@ -592,8 +592,9 @@ Rectangle {
 
                 onCheckedChanged: {
                     if(checked){
-                        threadManager.startTask();
+                        threadManager.startCamera();
                     }else{
+                        threadManager.stopCamera()
                     }
                 }
             }
@@ -615,14 +616,13 @@ Rectangle {
 
             Image {
                 id: videoFeed
-                source: "image://videoframe/"
-                anchors.fill: parent
+                source: "image://camera/"
                 fillMode: Image.PreserveAspectFit
                 Timer {
                     interval: 30
                     running: true
                     repeat: true
-                    onTriggered: videoFeed.source = "image://videoframe/" + Math.random()
+                    onTriggered: videoFeed.source = "image://camera/" + Math.random()
                 }
             }
         }

@@ -1,24 +1,24 @@
-// ThreadManager.h
 #ifndef THREADMANAGER_H
 #define THREADMANAGER_H
 
 #include <QObject>
 #include <QThreadPool>
+#include "CameraWorker.h"
+#include "ImageProvider.h"
 
 class ThreadManager : public QObject {
     Q_OBJECT
 public:
-    explicit ThreadManager(QObject *parent = nullptr);
+    explicit ThreadManager(ImageProvider *provider, QObject *parent = nullptr);
     ~ThreadManager();
 
-
-    // Q_INVOKABLE void startThreadWork();
-
-public slots:
-    void startTask();
+    Q_INVOKABLE void startCamera();
+    Q_INVOKABLE void stopCamera();
 
 private:
-    QThreadPool *threadPool;
+    QThreadPool threadPool;
+    CameraWorker *cameraWorker;
+    ImageProvider *imageProvider;
 };
 
 #endif // THREADMANAGER_H
