@@ -62,7 +62,7 @@ Rectangle {
 
             GroupBox {
                 id: groupBox
-                height: 200
+                height: 150
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: tabBar.bottom
@@ -90,7 +90,10 @@ Rectangle {
                         TextField {
                             id: textField
                             width: 500
+                            Layout.fillHeight: true
                             Layout.fillWidth: true
+                            font.pointSize: fontSize10
+
                         }
 
                         Button {
@@ -99,7 +102,6 @@ Rectangle {
                             font.pointSize: 15
 
                             onClicked: {
-                                // Vision.status
                                 fileDialog.open()
                             }
 
@@ -110,10 +112,8 @@ Rectangle {
                                 title: "选择权重文件"
 
                                 onAccepted: {
-
                                     textField.text = fileDialog.currentFile.toString().replace("file:///", "");
                                     Vision.modelManger.setModelPath( fileDialog.currentFile.toString().replace("file:///", ""))
-                                    console.log(Vision.modelManger.modelPath)
                                 }
                                 onRejected: {
                                     console.log("File selection was canceled");
@@ -136,7 +136,10 @@ Rectangle {
 
                         TextField {
                             id: textField1
+                            Layout.fillHeight: true
                             Layout.fillWidth: true
+                            font.pointSize: fontSize10
+
                         }
 
                         Button {
@@ -155,7 +158,8 @@ Rectangle {
                                 title: "选择类别文件"
 
                                 onAccepted: {
-                                    textField1.text = fileDialog.currentFile.toString().replace("file:///", "");
+                                    textField1.text = fileDialog1.currentFile.toString().replace("file:///", "");
+                                    Vision.modelManger.setClassPath( fileDialog1.currentFile.toString().replace("file:///", ""))
                                 }
                                 onRejected: {
                                     console.log("File selection was canceled");
@@ -259,6 +263,8 @@ Rectangle {
 
                     Row {
                         id: row4
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
                         spacing: 0
 
                         Label {
@@ -315,8 +321,8 @@ Rectangle {
                         id: row1
                         width: 200
                         height: 400
-                        Layout.fillHeight: false
-                        Layout.fillWidth: false
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
 
                         Label {
                             id: label3
@@ -369,8 +375,8 @@ Rectangle {
                         width: 200
                         height: 400
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        Layout.fillHeight: false
-                        Layout.fillWidth: false
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
 
                         Label {
                             id: label4
@@ -518,7 +524,9 @@ Rectangle {
                             id: textField2
                             height: 40
                             anchors.verticalCenter: parent.verticalCenter
+                            Layout.fillHeight: true
                             Layout.fillWidth: true
+                            font.pointSize: fontSize10
                         }
 
                         Button {
@@ -536,10 +544,12 @@ Rectangle {
                                 id: fileDialog2
 
                                 nameFilters: ["All Files (*.*)"]
-                                title: "选择权重文件"
+                                title: "选择Label文件"
 
                                 onAccepted: {
                                     textField2.text = fileDialog2.currentFile.toString().replace("file:///", "");
+                                    Vision.modelManger.setLabelPath( fileDialog1.currentFile.toString().replace("file:///", ""))
+
                                 }
                                 onRejected: {
                                     console.log("File selection was canceled");
@@ -574,6 +584,8 @@ Rectangle {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     font.pointSize: 15
                     onClicked: {
+                        _switch.checked = true
+                        Vision.threadManager.startCamera();
                     }
                 }
 
@@ -583,6 +595,8 @@ Rectangle {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     font.pointSize: 15
                     onClicked: {
+                        _switch.checked = false
+                        Vision.threadManager.stopCamera()
                     }
                 }
 
@@ -597,9 +611,9 @@ Rectangle {
 
                 onCheckedChanged: {
                     if(checked){
-                        threadManager.startCamera();
+                        Vision.threadManager.startCamera();
                     }else{
-                        threadManager.stopCamera()
+                        Vision.threadManager.stopCamera()
                     }
                 }
             }
@@ -617,8 +631,6 @@ Rectangle {
             anchors.rightMargin: 30
             anchors.topMargin: 30
             anchors.bottomMargin: 30
-
-
 
             Image {
                 id: videoFeed

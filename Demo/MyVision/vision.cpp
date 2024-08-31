@@ -18,16 +18,17 @@ void Vision::setModelManger(ModelManager *newModelManger)
     emit modelMangerChanged();
 }
 
-QString *Vision::status() const
+
+ThreadManager *Vision::threadManager() const
 {
-    return m_status;
+    return m_threadManager;
 }
 
-void Vision::setStatus(QString *newStatus)
+void Vision::setThreadManager(ThreadManager *newThreadManager)
 {
-    if (m_status == newStatus)
+    if (m_threadManager == newThreadManager)
         return;
-    m_status = newStatus;
-    emit statusChanged();
+    m_threadManager = newThreadManager;
+    emit threadManagerChanged();
 }
 

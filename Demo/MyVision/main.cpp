@@ -42,7 +42,9 @@ int main(int argc, char *argv[])
 
     // 创建 ThreadManager 实例并注册到 QML
     ThreadManager *threadManager = new ThreadManager(provider);
-    engine.rootContext()->setContextProperty("threadManager", threadManager);
+    vision->setThreadManager(threadManager);
+
+
 
 
     QObject::connect(
