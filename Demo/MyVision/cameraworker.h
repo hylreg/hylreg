@@ -1,24 +1,21 @@
 #ifndef CAMERAWORKER_H
 #define CAMERAWORKER_H
 
-#include <QRunnable>
-#include <QImage>
-#include <opencv2/opencv.hpp>
 #include <QThread>
-
-class ImageProvider;
+#include <QMutex>
+#include <QImage>
+#include "ImageProvider.h"
+#include <QRunnable>
 
 class CameraWorker : public QObject, public QRunnable {
     Q_OBJECT
 public:
-    CameraWorker(ImageProvider *provider);
+    explicit CameraWorker(ImageProvider *provider);
     void run() override;
-
-// signals:
-//     void finished();
 
 private:
     ImageProvider *provider;
+    QMutex mutex; // 用于保护对 ImageProvider 的访问
 };
 
 #endif // CAMERAWORKER_H

@@ -8,14 +8,17 @@ ThreadManager::~ThreadManager() {
 }
 
 void ThreadManager::startCamera() {
-    if (!cameraWorker) {
+    QMutexLocker locker(&mutex);
 
+    if (!cameraWorker) {
         cameraWorker = new CameraWorker(imageProvider);
         threadPool.start(cameraWorker);
     }
 }
 
 void ThreadManager::stopCamera() {
+    QMutexLocker locker(&mutex);
+
     if (cameraWorker) {
         threadPool.clear(); // 清除线程池中的任务
         delete cameraWorker;

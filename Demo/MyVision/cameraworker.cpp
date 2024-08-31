@@ -1,6 +1,4 @@
 #include "CameraWorker.h"
-#include "ImageProvider.h"
-#include <QThread>
 #include <opencv2/opencv.hpp>
 
 CameraWorker::CameraWorker(ImageProvider *provider) : provider(provider) {}
@@ -19,13 +17,19 @@ void CameraWorker::run() {
             continue;
         }
 
+
         // 转换到 QImage
         cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
-        QImage image(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
 
-        provider->setImage(image);
+        QImage image =QImage(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888).rgbSwapped();
+
+        {
+            QMutexLocker locker(&mutex); // 自动加锁
+            provider->setImage(image);
+        }
 
         // 添加适当的延迟来控制帧率
         QThread::msleep(30); // 30 ms 延迟
     }
 }
+

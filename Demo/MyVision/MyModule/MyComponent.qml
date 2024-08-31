@@ -614,13 +614,15 @@ Rectangle {
             anchors.bottomMargin: 30
 
 
+
             Image {
                 id: videoFeed
+                anchors.fill: parent
                 source: "image://camera/"
                 fillMode: Image.PreserveAspectFit
                 Timer {
                     interval: 30
-                    running: true
+                    running: _switch.checked
                     repeat: true
                     onTriggered: videoFeed.source = "image://camera/" + Math.random()
                 }

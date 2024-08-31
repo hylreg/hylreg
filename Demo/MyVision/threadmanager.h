@@ -5,6 +5,7 @@
 #include <QThreadPool>
 #include "CameraWorker.h"
 #include "ImageProvider.h"
+#include <QMutex>
 
 class ThreadManager : public QObject {
     Q_OBJECT
@@ -19,6 +20,8 @@ private:
     QThreadPool threadPool;
     CameraWorker *cameraWorker;
     ImageProvider *imageProvider;
+
+    mutable QMutex mutex;
 };
 
 #endif // THREADMANAGER_H
