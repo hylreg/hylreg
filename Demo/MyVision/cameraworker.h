@@ -6,6 +6,9 @@
 #include <QImage>
 #include "ImageProvider.h"
 #include <QRunnable>
+#include <modelmanager.h>
+#include <opencv2/opencv.hpp>
+
 
 class CameraWorker : public QObject, public QRunnable {
     Q_OBJECT
@@ -16,6 +19,7 @@ public:
 private:
     ImageProvider *provider;
     QMutex mutex; // 用于保护对 ImageProvider 的访问
+    ModelManager *modelManager;
 };
 
 #endif // CAMERAWORKER_H

@@ -4,6 +4,22 @@ ModelManager::ModelManager(QObject *parent)
     : QObject{parent}
 {}
 
+QString ModelManager::AIAlgorithm() const
+{
+    return m_AIAlgorithm;
+}
+
+void ModelManager::setAIAlgorithm(const QString &newAIAlgorithm)
+{
+    if (m_AIAlgorithm == newAIAlgorithm)
+        return;
+    m_AIAlgorithm = newAIAlgorithm;
+    emit AIAlgorithmChanged();
+}
+
+
+
+
 QString ModelManager::modelPath() const
 {
     return m_modelPath;
@@ -67,6 +83,16 @@ void ModelManager::setCheckBoxState(int newCheckBoxState)
         return;
     m_checkBoxState = newCheckBoxState;
     emit checkBoxStateChanged();
+}
+
+void ModelManager::modelRun(QString AIAlgorithm, QString m_modelPath, QString m_classPath, QString m_labelPath, QString m_deployPlatform, int m_checkBoxState)
+{
+    // model.yolov8ORT();
+}
+
+void ModelManager::modelManagerTest()
+{
+    qDebug("modelManagerTest");
 }
 
 

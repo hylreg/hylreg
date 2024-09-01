@@ -5,6 +5,9 @@ project(MyVision VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
 
+set(ONNXRUNTIME_ROOT "D:/Libraries/vcpkg/installed/x64-windows")
+include_directories(ORT ${ONNXRUNTIME_ROOT}/include)
+
 find_package(OpenCV REQUIRED)
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2)
 
@@ -29,6 +32,7 @@ qt_add_qml_module(appMyVision
         SOURCES imageprovider.h imageprovider.cpp
         SOURCES modelmanager.h modelmanager.cpp
         SOURCES settingsmanager.h settingsmanager.cpp
+        SOURCES model.h model.cpp
         # SOURCES mythread.h mythread.cpp
 
 )
@@ -45,8 +49,11 @@ set_target_properties(appMyVision PROPERTIES
 )
 
 target_link_libraries(appMyVision
-    PRIVATE Qt6::Quick Qt6::QuickControls2
-        ${OpenCV_LIBS}
+    PRIVATE
+    Qt6::Quick
+    Qt6::QuickControls2
+    ${OpenCV_LIBS}
+    ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib
 )
 
 include(GNUInstallDirs)

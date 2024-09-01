@@ -13,6 +13,7 @@ void ThreadManager::startCamera() {
     if (!cameraWorker) {
         cameraWorker = new CameraWorker(imageProvider);
         threadPool.start(cameraWorker);
+
     }
 }
 
@@ -24,4 +25,5 @@ void ThreadManager::stopCamera() {
         delete cameraWorker;
         cameraWorker = nullptr;
     }
+
 }

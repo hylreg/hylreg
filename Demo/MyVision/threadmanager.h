@@ -21,6 +21,7 @@ private:
     CameraWorker *cameraWorker;
     ImageProvider *imageProvider;
 
+
     mutable QMutex mutex;
 };
 

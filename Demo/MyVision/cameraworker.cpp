@@ -1,5 +1,4 @@
 #include "CameraWorker.h"
-#include <opencv2/opencv.hpp>
 
 CameraWorker::CameraWorker(ImageProvider *provider) : provider(provider) {}
 
@@ -24,6 +23,8 @@ void CameraWorker::run() {
 
         {
             QMutexLocker locker(&mutex); // 自动加锁
+            modelManager->modelManagerTest();
+            modelManager->model.modelTest();
             provider->setImage(image);
         }
 
