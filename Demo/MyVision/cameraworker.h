@@ -9,6 +9,8 @@
 #include <modelmanager.h>
 #include <opencv2/opencv.hpp>
 
+class Vision;
+
 
 class CameraWorker : public QObject, public QRunnable {
     Q_OBJECT

@@ -1,4 +1,5 @@
 #include "CameraWorker.h"
+#include "vision.h"
 
 CameraWorker::CameraWorker(ImageProvider *provider) : provider(provider) {}
 
@@ -22,9 +23,10 @@ void CameraWorker::run() {
         QImage image =QImage(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888).rgbSwapped();
 
         {
+            Vision *visionInstance = Vision::create(nullptr, nullptr);
             QMutexLocker locker(&mutex); // 自动加锁
             modelManager->modelManagerTest();
-            modelManager->model.modelTest();
+            modelManager->model.modelTest(visionInstance->modelManger()->modelPath());
             provider->setImage(image);
         }
 
