@@ -1,5 +1,5 @@
 #include "CameraWorker.h"
-#include "vision.h"
+#include <vision.h>
 
 CameraWorker::CameraWorker(ImageProvider *provider) : provider(provider) {}
 
@@ -19,14 +19,19 @@ void CameraWorker::run() {
 
         // 转换到 QImage
         cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
+        Vision* visionInstance = Vision::create(nullptr,nullptr);
+        visionInstance->modelManger()->model.yolov8ORT(frame, visionInstance->modelManger()->modelPath().toStdString(), visionInstance->modelManger()->classPath().toStdString());
 
         QImage image =QImage(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888).rgbSwapped();
 
         {
-            Vision *visionInstance = Vision::create(nullptr, nullptr);
             QMutexLocker locker(&mutex); // 自动加锁
-            modelManager->modelManagerTest();
-            modelManager->model.modelTest(visionInstance->modelManger()->modelPath());
+
+        //     modelManager->modelManagerTest();
+        modelManager->model.modelTest(visionInstance->modelManger()->modelPath());
+        modelManager->model.modelTest(visionInstance->modelManger()->classPath());
+
+
             provider->setImage(image);
         }
 

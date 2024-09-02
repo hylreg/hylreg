@@ -8,8 +8,7 @@ std::vector<std::string> Model::readClassNames(std::string labels_txt_file)
 {
     std::vector<std::string> classNames;
 
-    // std::ifstream fp(getClassNamePath().toStdString());
-    std::ifstream fp("D:\\Projects\\C++\\hylreg\\ORT\\yolo\\data\\classes.txt");
+    std::ifstream fp(labels_txt_file);
 
     if (!fp.is_open())
     {

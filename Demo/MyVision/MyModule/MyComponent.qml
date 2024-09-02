@@ -161,7 +161,7 @@ Rectangle {
                                 onAccepted: {
                                     textField1.text = fileDialog1.currentFile.toString().replace("file:///", "");
                                     MyApp.settingsManager.setValue("ClassPath", textField1.text)
-                                    MyApp.modelManger.setModelPath(textField1.text)
+                                    MyApp.modelManger.setClassPath(textField1.text)
                                 }
                                 onRejected: {
                                     console.log("File selection was canceled");
