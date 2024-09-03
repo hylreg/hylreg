@@ -33,6 +33,9 @@ qt_add_qml_module(appMyVision
         SOURCES modelmanager.h modelmanager.cpp
         SOURCES settingsmanager.h settingsmanager.cpp
         SOURCES model.h model.cpp
+        SOURCES yolo_v8.h yolo_v8.cpp
+        SOURCES YOLOv8-ONNXRuntime-CPP/inference.cpp YOLOv8-ONNXRuntime-CPP/inference.h
+RESOURCES YOLOv8-ONNXRuntime-CPP/classes.txt YOLOv8-ONNXRuntime-CPP/CMakeLists.txt YOLOv8-ONNXRuntime-CPP/coco8.yaml YOLOv8-ONNXRuntime-CPP/README.md YOLOv8-ONNXRuntime-CPP/yolov8n.onnx YOLOv8-ONNXRuntime-CPP/yolov8n.pt
         # SOURCES mythread.h mythread.cpp
 
 )
@@ -61,4 +64,7 @@ install(TARGETS appMyVision
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+add_custom_command(TARGET appMyVision POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/images
 )

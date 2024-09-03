@@ -24,6 +24,8 @@ int main(int argc, char *argv[])
     engine.addImageProvider("camera", provider);
 
 
+
+
     // 创建 Vision 单例
     Vision *vision = Vision::create(nullptr, nullptr);
 

@@ -9,6 +9,10 @@ void CameraWorker::run() {
     if (!cap.isOpened()) {
         return; // 摄像头打开失败
     }
+    Vision* visionInstance = Vision::create(nullptr,nullptr);
+
+    YOLO_V8* yoloDetector = new YOLO_V8;
+    visionInstance->modelManger()->model.myyolov8->DetectTest(yoloDetector);
 
     while (!QThread::currentThread()->isInterruptionRequested()) {
         cv::Mat frame;
@@ -19,8 +23,9 @@ void CameraWorker::run() {
 
         // 转换到 QImage
         cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
-        Vision* visionInstance = Vision::create(nullptr,nullptr);
-        visionInstance->modelManger()->model.yolov8ORT(frame, visionInstance->modelManger()->modelPath().toStdString(), visionInstance->modelManger()->classPath().toStdString());
+
+        // visionInstance->modelManger()->model.yolov8ORT(frame, visionInstance->modelManger()->modelPath().toStdString(), visionInstance->modelManger()->classPath().toStdString());
+        visionInstance->modelManger()->model.myyolov8->Detector(yoloDetector,frame);
 
         QImage image =QImage(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888).rgbSwapped();
 
@@ -28,8 +33,8 @@ void CameraWorker::run() {
             QMutexLocker locker(&mutex); // 自动加锁
 
         //     modelManager->modelManagerTest();
-        modelManager->model.modelTest(visionInstance->modelManger()->modelPath());
-        modelManager->model.modelTest(visionInstance->modelManger()->classPath());
+        // modelManager->model.modelTest(visionInstance->modelManger()->modelPath());
+        // modelManager->model.modelTest(visionInstance->modelManger()->classPath());
 
 
             provider->setImage(image);
