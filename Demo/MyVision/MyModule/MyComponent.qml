@@ -94,6 +94,11 @@ Rectangle {
                             Layout.fillWidth: true
                             font.pointSize: fontSize10
 
+                            Component.onCompleted: {
+                                textField.text = MyApp.settingsManager.value("ModelPath","defaultValue")
+                                MyApp.modelManger.setModelPath(textField.text)
+                            }
+
                         }
 
                         Button {
@@ -140,6 +145,11 @@ Rectangle {
                             Layout.fillHeight: true
                             Layout.fillWidth: true
                             font.pointSize: fontSize10
+
+                            Component.onCompleted: {
+                                textField1.text = MyApp.settingsManager.value("ClassPath","defaultValue")
+                                MyApp.modelManger.setClassPath(textField1.text)
+                            }
 
                         }
 
@@ -570,6 +580,11 @@ Rectangle {
                             Layout.fillHeight: true
                             Layout.fillWidth: true
                             font.pointSize: fontSize10
+
+                            Component.onCompleted: {
+                                textField2.text = MyApp.settingsManager.value("LabelPath","defaultValue").toString()
+                                MyApp.modelManger.setModelPath(textField2.text)
+                            }
                         }
 
                         Button {

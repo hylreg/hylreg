@@ -12,7 +12,8 @@ void CameraWorker::run() {
     Vision* visionInstance = Vision::create(nullptr,nullptr);
 
     YOLO_V8* yoloDetector = new YOLO_V8;
-    visionInstance->modelManger()->model.myyolov8->DetectTest(yoloDetector);
+
+    visionInstance->modelManger()->model.myyolov8->CreateDetectSession(yoloDetector,visionInstance->modelManger()->modelPath(),visionInstance->modelManger()->classPath());
 
     while (!QThread::currentThread()->isInterruptionRequested()) {
         cv::Mat frame;
