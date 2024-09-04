@@ -224,9 +224,13 @@ Rectangle {
                                 MyApp.settingsManager.setValue("DeployPlatform", rowLayout3.selectedIndex)
 
                             }
-
                         }
+
                     }
+
+
+
+
 
                     CheckBox {
                         id: checkBox1
@@ -244,6 +248,7 @@ Rectangle {
 
                             }
                         }
+
                     }
 
                     CheckBox {
@@ -259,9 +264,24 @@ Rectangle {
                                 rowLayout3.selectedIndex = 2
                                 MyApp.modelManger.setDeployPlatform("ONNXRUNTIME")
                                 MyApp.settingsManager.setValue("DeployPlatform", rowLayout3.selectedIndex)
-
-
                             }
+                        }
+                    }
+
+                    Component.onCompleted: {
+                        var deployPlatformValue = parseInt(MyApp.settingsManager.value("DeployPlatform", "defaultValue"), 10);
+
+                        if(deployPlatformValue === 0){
+                            console.log(0)
+                            rowLayout3.selectedIndex = 0
+                        }
+                        else if(deployPlatformValue===1){
+                             console.log(1)
+                            rowLayout3.selectedIndex = 1
+                        }
+                        else if(deployPlatformValue===2){
+                             console.log(2)
+                            rowLayout3.selectedIndex = 2
                         }
                     }
                 }
@@ -305,7 +325,7 @@ Rectangle {
                             font.pointSize: root.fontSize15
 
                             from: 0
-                            value: decimalToInt(0.6)
+                            value: decimalToInt(parseInt(MyApp.settingsManager.value("Conf", "60"), 10)/100.0)
                             to: decimalToInt(1)
                             stepSize: decimalFactor/decimalFactor
                             editable: true
@@ -338,6 +358,12 @@ Rectangle {
 
                             }
 
+                            Component.onCompleted: {
+                                var deployPlatformValue = parseInt(MyApp.settingsManager.value("Conf", "60"), 10);
+                                spinBox.value = decimalToInt(deployPlatformValue/100.0)
+                            }
+
+
                         }
 
 
@@ -367,7 +393,7 @@ Rectangle {
 
 
                             from: 0
-                            value: decimalToInt(0.6)
+                            value: decimalToInt(parseInt(MyApp.settingsManager.value("Socre", "60"), 10)/100.0)
                             to: decimalToInt(1)
                             stepSize: decimalFactor/decimalFactor
                             editable: true
@@ -399,6 +425,11 @@ Rectangle {
                                 MyApp.settingsManager.setValue("Socre", spinBox1.value)
 
                             }
+
+                            Component.onCompleted: {
+                                var deployPlatformValue = parseInt(MyApp.settingsManager.value("Socre", "defaultValue"), 10);
+                                spinBox1.value = decimalToInt(deployPlatformValue/100.0)
+                            }
                         }
                     }
 
@@ -426,7 +457,7 @@ Rectangle {
 
 
                             from: 0
-                            value: decimalToInt(0.6)
+                            value: decimalToInt(parseInt(MyApp.settingsManager.value("NMS", "defaultValue"), 10)/100.0)
                             to: decimalToInt(1)
                             stepSize: decimalFactor/decimalFactor
                             editable: true
@@ -457,6 +488,11 @@ Rectangle {
                             onValueChanged: {
                                 MyApp.settingsManager.setValue("NMS", spinBox2.value)
 
+                            }
+
+                            Component.onCompleted: {
+                                var deployPlatformValue = parseInt(MyApp.settingsManager.value("NMS", "defaultValue"), 10);
+                                spinBox2.value = decimalToInt(deployPlatformValue/100.0)
                             }
                         }
                     }
