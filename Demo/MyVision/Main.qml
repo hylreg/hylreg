@@ -7,7 +7,7 @@ Window {
     width: 1440
     height: 900
     visible: true
-    title: qsTr("MyVision")
+    title: qsTr("hylregVision")
 
     MyComponent {
         id:myComponent

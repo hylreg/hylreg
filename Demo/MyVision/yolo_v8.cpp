@@ -152,7 +152,7 @@ void MyYOLO_V8::CreateDetectSession(YOLO_V8*& p,QString modelPath,QString classP
     // YOLO_V8 *yoloDetector = new YOLO_V8;
     ReadCocoYaml(p,classPath);
     DL_INIT_PARAM params;
-    params.rectConfidenceThreshold = 0.1;
+    params.rectConfidenceThreshold = 0.6;
     params.iouThreshold = 0.5;
     // params.modelPath = "../../yolov8n.onnx";
     params.modelPath = modelPath.toStdString();

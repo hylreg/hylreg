@@ -427,7 +427,7 @@ Rectangle {
                             }
 
                             Component.onCompleted: {
-                                var deployPlatformValue = parseInt(MyApp.settingsManager.value("Socre", "defaultValue"), 10);
+                                var deployPlatformValue = parseInt(MyApp.settingsManager.value("Socre", "60"), 10);
                                 spinBox1.value = decimalToInt(deployPlatformValue/100.0)
                             }
                         }
@@ -457,7 +457,7 @@ Rectangle {
 
 
                             from: 0
-                            value: decimalToInt(parseInt(MyApp.settingsManager.value("NMS", "defaultValue"), 10)/100.0)
+                            value: decimalToInt(parseInt(MyApp.settingsManager.value("NMS", "60"), 10)/100.0)
                             to: decimalToInt(1)
                             stepSize: decimalFactor/decimalFactor
                             editable: true
@@ -491,7 +491,7 @@ Rectangle {
                             }
 
                             Component.onCompleted: {
-                                var deployPlatformValue = parseInt(MyApp.settingsManager.value("NMS", "defaultValue"), 10);
+                                var deployPlatformValue = parseInt(MyApp.settingsManager.value("NMS", "60"), 10);
                                 spinBox2.value = decimalToInt(deployPlatformValue/100.0)
                             }
                         }
@@ -519,12 +519,11 @@ Rectangle {
 
                     function updateState() {
                         let state = 0;
-                        if (checkBox1.checked) state |= 1;  // 0b001
-                        if (checkBox2.checked) state |= 2;  // 0b010
-                        if (checkBox3.checked) state |= 4;  // 0b100
+                        if (checkBox3.checked) state |= 1;  // 0b001
+                        if (checkBox4.checked) state |= 2;  // 0b010
+                        if (checkBox5.checked) state |= 4;  // 0b100
                         MyApp.modelManger.setCheckBoxState(state)
                         MyApp.settingsManager.setValue("DispalyState", state)
-
                     }
 
                     CheckBox {
@@ -535,11 +534,6 @@ Rectangle {
                         font.pointSize:root.fontSize15
 
                         onCheckStateChanged: {
-                            if(checkState){
-                                console.log("确认选中")
-                            }else{
-                                 console.log("取消选中")
-                            }
                             rowLayout5.updateState()
                         }
                     }
@@ -552,12 +546,6 @@ Rectangle {
                         font.pointSize:root.fontSize15
 
                         onCheckStateChanged: {
-                            if(checkState){
-                                console.log("确认选中")
-
-                            }else{
-                                 console.log("取消选中")
-                            }
                             rowLayout5.updateState()
                         }
                     }
@@ -570,13 +558,17 @@ Rectangle {
                         font.pointSize: root.fontSize15
 
                         onCheckStateChanged: {
-                            if(checkState){
-                                console.log("确认选中")
-                            }else{
-                                 console.log("取消选中")
-                            }
                             rowLayout5.updateState()
                         }
+                    }
+                    Component.onCompleted: {
+                        // 从设置中读取 state
+                        let state = parseInt(MyApp.settingsManager.value("DispalyState", "0"), 10);
+
+                        // 根据 state 更新复选框的状态
+                        checkBox3.checked = (state & 1) !== 0;  // 0b001
+                        checkBox4.checked = (state & 2) !== 0;  // 0b010
+                        checkBox5.checked = (state & 4) !== 0;  // 0b100
                     }
                 }
             }
