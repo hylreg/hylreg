@@ -9,3 +9,6 @@ find_package(OpenCV REQUIRED)
 #Imgproc
 add_executable(FindingContours FindingContours.cpp)
 target_link_libraries(FindingContours ${OpenCV_LIBS})
+
+add_executable(ConvexHull ConvexHull.cpp)
+target_link_libraries(ConvexHull ${OpenCV_LIBS})
