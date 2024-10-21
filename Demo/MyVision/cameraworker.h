@@ -4,7 +4,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QImage>
-#include "ImageProvider.h"
+#include "imageprovider.h"
 #include <QRunnable>
 #include <modelmanager.h>
 #include <opencv2/opencv.hpp>

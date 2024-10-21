@@ -3,8 +3,8 @@
 #include <QQuickStyle>
 #include "vision.h"
 #include <QQmlContext>
-#include "ImageProvider.h"
-#include "ThreadManager.h"
+#include "imageprovider.h"
+#include "threadmanager.h"
 
 Vision* createVision() {
     Vision *vision = Vision::create(nullptr, nullptr);

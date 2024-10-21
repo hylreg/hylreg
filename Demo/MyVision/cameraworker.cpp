@@ -1,4 +1,4 @@
-#include "CameraWorker.h"
+#include "cameraworker.h"
 #include <vision.h>
 
 CameraWorker::CameraWorker(ImageProvider *provider) : provider(provider) {}

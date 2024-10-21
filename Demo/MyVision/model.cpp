@@ -42,14 +42,16 @@ void Model::yolov8ORT(cv::Mat &frame ,std::string onnxpath,std::string labels_tx
 
     std::vector<std::string> labels = readClassNames(labels_txt_file);
 
-    std::wstring modelPath = std::wstring(onnxpath.begin(), onnxpath.end());
+    const char* modelPath = onnxpath.c_str();
+    // 打印模型路径
+    std::cout << "模型路径: " << modelPath << std::endl;
     Ort::SessionOptions session_options;
     Ort::Env env = Ort::Env(ORT_LOGGING_LEVEL_ERROR, "yolov8-onnx");
 
     session_options.SetGraphOptimizationLevel(ORT_ENABLE_BASIC);
     std::cout << "onnxruntime inference try to use GPU Device" << std::endl;
     OrtSessionOptionsAppendExecutionProvider_CUDA(session_options, 0);
-    Ort::Session session_(env, modelPath.c_str(), session_options);
+    Ort::Session session_(env, modelPath, session_options);
 
     std::vector<std::string> input_node_names;
     std::vector<std::string> output_node_names;
