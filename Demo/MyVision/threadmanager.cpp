@@ -1,4 +1,4 @@
-#include "ThreadManager.h"
+#include "threadmanager.h"
 
 ThreadManager::ThreadManager(ImageProvider *provider, QObject *parent)
     : QObject(parent), imageProvider(provider), cameraWorker(nullptr) {}

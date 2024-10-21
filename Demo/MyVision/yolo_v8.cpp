@@ -99,7 +99,7 @@ void MyYOLO_V8::Classifier(YOLO_V8*& p)
 int MyYOLO_V8::ReadCocoYaml(YOLO_V8*& p,QString classPath) {
     // Open the YAML file
     // std::ifstream file("../../coco8.yaml");
-    std::ifstream file(classPath.toStdString());
+    std::ifstream file("/"+classPath.toStdString());
 
 
     if (!file.is_open())
@@ -149,13 +149,13 @@ int MyYOLO_V8::ReadCocoYaml(YOLO_V8*& p,QString classPath) {
 
 void MyYOLO_V8::CreateDetectSession(YOLO_V8*& p,QString modelPath,QString classPath)
 {
-    // YOLO_V8 *yoloDetector = new YOLO_V8;
+//     YOLO_V8 *yoloDetector = new YOLO_V8;
     ReadCocoYaml(p,classPath);
     DL_INIT_PARAM params;
     params.rectConfidenceThreshold = 0.6;
     params.iouThreshold = 0.5;
-    // params.modelPath = "../../yolov8n.onnx";
-    params.modelPath = modelPath.toStdString();
+//     params.modelPath = "../YOLOv8-ONNXRuntime-CPP/yolov8n.onnx";
+    params.modelPath = "/"+modelPath.toStdString();
 
     params.imgSize = { 640, 640 };
 #ifdef USE_CUDA
@@ -176,7 +176,7 @@ void MyYOLO_V8::CreateDetectSession(YOLO_V8*& p,QString modelPath,QString classP
     p->CreateSession(params);
 
     std::cout<<"CreateSession"<<std::endl;
-    // Detector(yoloDetector);
+//    Detector(yoloDetector);
 }
 
 // void MyYOLO_V8::ClsTest()

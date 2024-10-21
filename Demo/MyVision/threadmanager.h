@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QThreadPool>
-#include "CameraWorker.h"
-#include "ImageProvider.h"
+#include "cameraworker.h"
+#include "imageprovider.h"
 #include <QMutex>
 
 class ThreadManager : public QObject {

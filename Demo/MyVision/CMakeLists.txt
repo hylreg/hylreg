@@ -7,24 +7,31 @@ set(CMAKE_AUTORCC ON)
 
 if(WIN32)
     message(STATUS "This is Windows")
+    set(ONNXRUNTIME_ROOT "D:/Libraries/vcpkg/installed/x64-windows")
+
+    set(ONNXRUNTIME_LIBS ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib)
+
 elseif(UNIX)
     message(STATUS "This is Unix-like OS")
     if(APPLE)
         message(STATUS "This is macOS")
     else()
         message(STATUS "This is Linux")
+        set(ONNXRUNTIME_ROOT "/home/hyl/Libraries/onnxruntime-linux-x64-gpu-1.16.3")
+        set(ONNXRUNTIME_LIBS ${ONNXRUNTIME_ROOT}/lib/libonnxruntime.so)
+        set(CMAKE_PREFIX_PATH "/home/hyl/Programs/Qt/6.8.0/gcc_64" )
     endif()
 else()
     message(STATUS "Unknown OS")
 endif()
 
-set(ONNXRUNTIME_ROOT "D:/Libraries/vcpkg/installed/x64-windows")
+
 include_directories(ORT ${ONNXRUNTIME_ROOT}/include)
 
 find_package(OpenCV REQUIRED)
 find_package(Qt6 6.8 REQUIRED COMPONENTS Quick QuickControls2)
 
-qt_standard_project_setup(REQUIRES 6.5)
+qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appMyVision
     main.cpp
@@ -69,7 +76,7 @@ target_link_libraries(appMyVision
     Qt6::Quick
     Qt6::QuickControls2
     ${OpenCV_LIBS}
-    ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib
+    ${ONNXRUNTIME_LIBS}
 )
 
 include(GNUInstallDirs)
