@@ -7,7 +7,7 @@ set(CMAKE_AUTORCC ON)
 
 if(WIN32)
     message(STATUS "This is Windows")
-    set(ONNXRUNTIME_ROOT "D:/Libraries/vcpkg/installed/x64-windows")
+    set(ONNXRUNTIME_ROOT "D:/Libraries/onnxruntime-win-x64-gpu-1.16.3")
 
     set(ONNXRUNTIME_LIBS ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib)
 
