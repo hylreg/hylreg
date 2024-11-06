@@ -4,7 +4,7 @@ project(PCL)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(PCL REQUIRED)
-find_package(HDF5 REQUIRED)
+#find_package(HDF5 REQUIRED)
 #find_package(libcudacxx REQUIRED)
 #find_package(CUDA REQUIRED)
 
