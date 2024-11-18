@@ -13,8 +13,6 @@ include_directories(ORT ${ONNXRUNTIME_ROOT}/include)
 add_executable(ORT main.cpp)
 target_link_libraries(ORT ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib )
 
-add_executable(yolov8ORT yolo/yolov8_onnxruntime_demo.cpp)
-target_link_libraries(yolov8ORT ${ONNXRUNTIME_ROOT}/lib/onnxruntime.lib ${OpenCV_LIBS} )
 
 
 

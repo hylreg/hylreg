@@ -5,13 +5,13 @@ project(MyVision VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTORCC ON)
 
-set(ONNXRUNTIME_ROOT "D:/Libraries/vcpkg/installed/x64-windows")
+set(ONNXRUNTIME_ROOT "D:/Libraries/onnxruntime-win-x64-gpu-1.16.3")
 include_directories(ORT ${ONNXRUNTIME_ROOT}/include)
 
 find_package(OpenCV REQUIRED)
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Quick QuickControls2)
 
-qt_standard_project_setup(REQUIRES 6.5)
+qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appMyVision
     main.cpp
