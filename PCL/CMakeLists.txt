@@ -61,6 +61,8 @@ find_package(PCL REQUIRED)
 ##icp
 #add_executable(ICP Registration/icp.cpp)
 #target_link_libraries(ICP ${PCL_LIBRARIES})
+add_executable(GICP Registration/gicp.cpp)
+target_link_libraries(GICP ${PCL_LIBRARIES})
 #
 ##KdTree
 #add_executable(KdTree KdTree/kd_tree.cpp)
@@ -101,8 +103,8 @@ find_package(PCL REQUIRED)
 #add_executable(PCA Other/pca.cpp)
 #target_link_libraries(PCA ${PCL_LIBRARIES})
 
-add_executable(GPUTest Other/GPUTest.cpp)
-target_link_libraries(GPUTest ${PCL_LIBRARIES})
+#add_executable(GPUTest Other/GPUTest.cpp)
+#target_link_libraries(GPUTest ${PCL_LIBRARIES})
 #
 #add_executable(HistogramVisualization Other/HistogramVisualization.cpp)
 #target_link_libraries(HistogramVisualization ${PCL_LIBRARIES})
@@ -126,12 +128,12 @@ target_link_libraries(GPUTest ${PCL_LIBRARIES})
 #add_executable(NARF Keypoints/NARF.cpp)
 #target_link_libraries(NARF ${PCL_LIBRARIES})
 
-add_executable(CorrespondingGrouping Recognition/correspondence_grouping.cpp)
-target_link_libraries(CorrespondingGrouping ${PCL_LIBRARIES})
-add_executable(ImplicitShapeModel Recognition/implicit_shape_model.cpp)
-target_link_libraries(ImplicitShapeModel ${PCL_LIBRARIES})
-add_executable(GlobalHypothesisValidation Recognition/global_hypothesis_verification.cpp)
-target_link_libraries(GlobalHypothesisValidation ${PCL_LIBRARIES})
+#add_executable(CorrespondingGrouping Recognition/correspondence_grouping.cpp)
+#target_link_libraries(CorrespondingGrouping ${PCL_LIBRARIES})
+#add_executable(ImplicitShapeModel Recognition/implicit_shape_model.cpp)
+#target_link_libraries(ImplicitShapeModel ${PCL_LIBRARIES})
+#add_executable(GlobalHypothesisValidation Recognition/global_hypothesis_verification.cpp)
+#target_link_libraries(GlobalHypothesisValidation ${PCL_LIBRARIES})
 
 #Segmentation
 #add_executable(PlanarSegmentation Segmentation/planar_segmentation.cpp)
