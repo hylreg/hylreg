@@ -29,6 +29,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    MyWork* task = new MyWork;
+    MyWork* task = nullptr;
 };
 #endif // MAINWINDOW_H

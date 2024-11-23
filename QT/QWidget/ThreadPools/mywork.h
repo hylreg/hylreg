@@ -16,7 +16,6 @@ public:
     void stop();
 
 private:
-    bool startMyWork = true;
     bool stopMyWork = false;
 
 signals:
