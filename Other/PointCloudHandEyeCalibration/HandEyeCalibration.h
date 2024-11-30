@@ -1,0 +1,14 @@
+//
+// Created by Admin on 2024/11/30.
+//
+
+#ifndef THREADPOOLS_HANDEYECALIBRATION_H
+#define THREADPOOLS_HANDEYECALIBRATION_H
+
+
+class HandEyeCalibration {
+
+};
+
+
+#endif //THREADPOOLS_HANDEYECALIBRATION_H

@@ -16,10 +16,10 @@ MainWindow::~MainWindow() {
 void MainWindow::on_pushButton_start_clicked() {
     qDebug() << "start thread";
 
-    // if (task && task->isRunning()) {
-    //     task->stop();  // 停止当前任务
-    //     task = nullptr;  // 置空 task
-    // }// 添加任务
+    if (task) {
+        task->stop();  // 停止当前任务
+        task = nullptr;  // 置空 task
+    }// 添加任务
 
     task = new MyWork;
     QThreadPool::globalInstance()->start(task);
