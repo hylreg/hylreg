@@ -1,143 +1,148 @@
-﻿
-#include <Eigen/Dense>
-#include <ceres/ceres.h>
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
-#include <cmath>
+#include <Eigen/Dense>
 #include <random>
+#include <pcl/pcl_macros.h>
 
-// 定义齐次变换矩阵类型
-#define M_PI 3.14159265358979323846
-using Transform = Eigen::Matrix4d;
-
-// 工具函数：生成随机齐次变换矩阵
-Transform generateRandomTransform() {
+// 随机生成正交旋转矩阵
+Eigen::Matrix3d generateRandomRotation() {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> angle_dist(-M_PI, M_PI);
-    std::uniform_real_distribution<> translation_dist(-1.0, 1.0);
+    std::uniform_real_distribution<double> dist(-M_PI, M_PI);
 
-    // 随机旋转
-    double angle = angle_dist(gen);
-    Eigen::Matrix3d R = Eigen::AngleAxisd(angle, Eigen::Vector3d::UnitZ()).toRotationMatrix();
+    double angle_x = dist(gen);
+    double angle_y = dist(gen);
+    double angle_z = dist(gen);
 
-    // 随机平移
-    Eigen::Vector3d t(translation_dist(gen), translation_dist(gen), translation_dist(gen));
+    Eigen::Matrix3d Rx;
+    Rx << 1, 0, 0,
+            0, cos(angle_x), -sin(angle_x),
+            0, sin(angle_x), cos(angle_x);
 
-    // 构造齐次变换矩阵
-    Transform T = Transform::Identity();
-    T.block<3, 3>(0, 0) = R;
-    T.block<3, 1>(0, 3) = t;
+    Eigen::Matrix3d Ry;
+    Ry << cos(angle_y), 0, sin(angle_y),
+            0, 1, 0,
+            -sin(angle_y), 0, cos(angle_y);
+
+    Eigen::Matrix3d Rz;
+    Rz << cos(angle_z), -sin(angle_z), 0,
+            sin(angle_z), cos(angle_z), 0,
+            0, 0, 1;
+
+    Eigen::Matrix3d R = Rz * Ry * Rx;
+
+    // 校正旋转矩阵以确保正交性
+    Eigen::JacobiSVD<Eigen::Matrix3d> svd(R, Eigen::ComputeFullU | Eigen::ComputeFullV);
+    R = svd.matrixU() * svd.matrixV().transpose();
+
+    return R;
+}
+
+// 随机生成平移向量
+Eigen::Vector3d generateRandomTranslation(double range = 0.1) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(-range, range);
+
+    return Eigen::Vector3d(dist(gen), dist(gen), dist(gen));
+}
+
+// 随机生成变换矩阵
+Eigen::Matrix4d generateRandomTransform(double translation_range = 0.1) {
+    Eigen::Matrix4d T = Eigen::Matrix4d::Identity();
+    T.block<3, 3>(0, 0) = generateRandomRotation();
+    T.block<3, 1>(0, 3) = generateRandomTranslation(translation_range);
     return T;
 }
 
-// 工具函数：添加噪声
-Transform addNoiseToTransform(const Transform& T, double noise_level) {
-    Transform noisy_T = T;
+// 模拟数据生成函数
+void generateSimulationData(int num_samples, std::vector<Eigen::Matrix4d>& A_list,
+                            std::vector<Eigen::Matrix4d>& B_list, Eigen::Matrix4d& X) {
+    // 随机生成真实的手眼标定矩阵 X
+    X = generateRandomTransform();
 
-    // 添加旋转噪声
-    Eigen::Matrix3d R = T.block<3, 3>(0, 0);
-    Eigen::AngleAxisd angleAxis(noise_level * Eigen::Vector3d::Random().normalized());
-    R = angleAxis.toRotationMatrix() * R;
+    for (int i = 0; i < num_samples; ++i) {
+        // 随机生成机械臂变换矩阵 A_i
+        Eigen::Matrix4d A = generateRandomTransform();
+        A_list.push_back(A);
 
-    // 添加平移噪声
-    Eigen::Vector3d t = T.block<3, 1>(0, 3);
-    t += noise_level * Eigen::Vector3d::Random();
-
-    // 构造齐次变换矩阵
-    noisy_T.block<3, 3>(0, 0) = R;
-    noisy_T.block<3, 1>(0, 3) = t;
-    return noisy_T;
+        // 根据 X 和 A_i 生成对应的点云变换矩阵 B_i
+        Eigen::Matrix4d B = X.inverse() * A * X;
+        B_list.push_back(B);
+    }
 }
 
-// 定义 Ceres 误差项
-struct HandEyeError {
-    HandEyeError(const Transform& A, const Transform& B) : A_(A), B_(B) {}
+// 手眼标定求解函数
+Eigen::Matrix4d solveHandEye(const std::vector<Eigen::Matrix4d>& A_list,
+                             const std::vector<Eigen::Matrix4d>& B_list) {
+    Eigen::Matrix3d M = Eigen::Matrix3d::Zero();
 
-    template <typename T>
-    bool operator()(const T* const X_raw, T* residuals) const {
-        Eigen::Map<const Eigen::Matrix<T, 4, 4, Eigen::RowMajor>> X(X_raw);
-
-        // 计算误差：A * X - X * B
-        Eigen::Matrix<T, 4, 4> error = A_.cast<T>() * X - X * B_.cast<T>();
-
-        // 展平误差矩阵为一维数组
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                residuals[i * 4 + j] = error(i, j);
-            }
-        }
-        return true;
+    // 求解旋转部分
+    for (size_t i = 0; i < A_list.size(); ++i) {
+        Eigen::Matrix3d Ra = A_list[i].block<3, 3>(0, 0);
+        Eigen::Matrix3d Rb = B_list[i].block<3, 3>(0, 0);
+        M += Ra - Rb.transpose() * Ra * Rb;
     }
 
-    const Transform A_, B_;
-};
+    Eigen::JacobiSVD<Eigen::Matrix3d> svd(M, Eigen::ComputeFullU | Eigen::ComputeFullV);
+    Eigen::Matrix3d R = svd.matrixU() * svd.matrixV().transpose();
 
-// 优化求解 AX = XB
-Transform solveHandEyeAXEqualsXB(const std::vector<Transform>& A, const std::vector<Transform>& B) {
-    ceres::Problem problem;
-    Transform X = Transform::Identity(); // 初始猜测
-    double* X_data = X.data();
-
-    for (size_t i = 0; i < A.size(); ++i) {
-        problem.AddResidualBlock(
-                new ceres::AutoDiffCostFunction<HandEyeError, 16, 16>(
-                        new HandEyeError(A[i], B[i])),
-                nullptr, X_data);
+    // 修正旋转矩阵符号以确保正交性
+    if (R.determinant() < 0) {
+        R = -R;
     }
 
-    ceres::Solver::Options options;
-    options.linear_solver_type = ceres::DENSE_QR;
-    options.minimizer_progress_to_stdout = true;
-    ceres::Solver::Summary summary;
-    ceres::Solve(options, &problem, &summary);
+    // 求解平移部分
+    Eigen::Vector3d t = Eigen::Vector3d::Zero();
+    for (size_t i = 0; i < A_list.size(); ++i) {
+        t += A_list[i].block<3, 3>(0, 0) * B_list[i].block<3, 1>(0, 3) -
+             R * B_list[i].block<3, 3>(0, 0) * B_list[i].block<3, 1>(0, 3);
+    }
+    t /= A_list.size();
 
-    std::cout << summary.FullReport() << std::endl;
+    Eigen::Matrix4d X = Eigen::Matrix4d::Identity();
+    X.block<3, 3>(0, 0) = R;
+    X.block<3, 1>(0, 3) = t;
     return X;
 }
 
-// 剔除异常值
-void filterOutliers(std::vector<Transform>& A, std::vector<Transform>& B, double threshold) {
-    std::vector<Transform> filteredA, filteredB;
-    for (size_t i = 0; i < A.size(); ++i) {
-        double translationError = (A[i].block<3, 1>(0, 3) - B[i].block<3, 1>(0, 3)).norm();
-        if (translationError < threshold) {
-            filteredA.push_back(A[i]);
-            filteredB.push_back(B[i]);
-        }
-    }
-    A = filteredA;
-    B = filteredB;
-}
-
 int main() {
-    // 生成示例数据
-    Transform X_gt = generateRandomTransform(); // Ground truth X
-    std::vector<Transform> A, B;
+    // 模拟生成数据
+    std::vector<Eigen::Matrix4d> A_list;
+    std::vector<Eigen::Matrix4d> B_list;
+    Eigen::Matrix4d X_true;
 
-    size_t num_samples = 20;
-    double noise_level = 0.05;
+    int num_samples = 20; // 生成 20 组样本数据
+    generateSimulationData(num_samples, A_list, B_list, X_true);
 
-    for (size_t i = 0; i < num_samples; ++i) {
-        Transform A_i = generateRandomTransform();
-        Transform B_i = X_gt.inverse() * A_i * X_gt; // 生成 B_i = X^-1 * A_i * X
-        A.push_back(addNoiseToTransform(A_i, noise_level));
-        B.push_back(addNoiseToTransform(B_i, noise_level));
-    }
-
-    // 滤波：剔除异常值
-    filterOutliers(A, B, 0.5);
-
-    // 求解 AX = XB
-    Transform X = solveHandEyeAXEqualsXB(A, B);
+    // 使用手眼标定算法求解
+    Eigen::Matrix4d X_estimated = solveHandEye(A_list, B_list);
 
     // 输出结果
-    std::cout << "Ground truth X:\n" << X_gt << "\n\n";
-    std::cout << "Estimated X:\n" << X << "\n\n";
+    std::cout << "真实手眼标定矩阵 (X_true):\n" << X_true << "\n" << std::endl;
+    std::cout << "估计手眼标定矩阵 (X_estimated):\n" << X_estimated << "\n" << std::endl;
 
-    // 验证误差
-    double error = (X_gt - X).norm();
-    std::cout << "Estimation Error: " << error << std::endl;
+    // 计算误差
+    double rotation_error = 0.0;
+    double translation_error = 0.0;
+
+    for (size_t i = 0; i < A_list.size(); ++i) {
+        Eigen::Matrix3d Ra_est = A_list[i].block<3, 3>(0, 0) * X_estimated.block<3, 3>(0, 0);
+        Eigen::Matrix3d Rb_est = X_estimated.block<3, 3>(0, 0) * B_list[i].block<3, 3>(0, 0);
+
+        rotation_error += (Ra_est - Rb_est).norm(); // 旋转部分误差
+        translation_error += (A_list[i].block<3, 1>(0, 3) -
+                              X_estimated.block<3, 3>(0, 0) * B_list[i].block<3, 1>(0, 3) -
+                              X_estimated.block<3, 1>(0, 3))
+                .norm(); // 平移部分误差
+    }
+
+    rotation_error /= A_list.size();
+    translation_error /= A_list.size();
+
+    // 打印误差
+    std::cout << "旋转部分平均误差: " << rotation_error << std::endl;
+    std::cout << "平移部分平均误差: " << translation_error << std::endl;
 
     return 0;
 }
