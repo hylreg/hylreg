@@ -11,31 +11,6 @@
 using namespace pcl;
 using namespace Eigen;
 
-// 解决手眼标定问题并返回 X
-void solveHandEyeCalibration(const std::vector<Matrix4f> &A_list, const std::vector<Matrix4f> &B_list, Matrix4f &X) {
-    size_t n = A_list.size();
-
-    // 使用 MatrixXd 来容纳任意大小矩阵
-    MatrixXd A(4 * n, 16);
-    MatrixXd B(4 * n, 16);
-
-    for (size_t i = 0; i < n; ++i) {
-        // 变换矩阵 A_list[i] 和 B_list[i] 转换成 1D 向量形式填入 A 和 B
-        A.block<4, 4>(4 * i, 0) = A_list[i].topLeftCorner(4, 4).cast<double>(); // 强制转换为 double
-        B.block<4, 4>(4 * i, 0) = B_list[i].topLeftCorner(4, 4).cast<double>(); // 强制转换为 double
-    }
-
-    // 求解最小二乘问题 A*X = X*B
-    MatrixXd X_sol = (A.transpose() * A).ldlt().solve(A.transpose() * B);
-
-    // 将解转换为 Matrix4f
-    X = Matrix4f::Identity();
-    for (size_t i = 0; i < 4; ++i) {
-        for (size_t j = 0; j < 4; ++j) {
-            X(i, j) = X_sol(i, j);
-        }
-    }
-}
 
 // 验证 X 是否满足 AX = XB
 void verifyHandEyeCalibration(const std::vector<Matrix4f> &A_list, const std::vector<Matrix4f> &B_list, const Matrix4f &X) {
@@ -57,6 +32,45 @@ void verifyHandEyeCalibration(const std::vector<Matrix4f> &A_list, const std::ve
     }
 
     std::cout << "所有变换对的总误差: " << total_error << std::endl;
+}
+void verifyHandEyeCalibration(const std::vector<Matrix4d> &A_list, const std::vector<Matrix4d> &B_list, const Matrix4d& X) {
+    float total_error = 0.0f;
+
+    for (size_t i = 0; i < A_list.size(); ++i) {
+        // 计算 AX 和 XB
+        Matrix4d AX = A_list[i] * X;
+        Matrix4d XB = X * B_list[i];
+
+        // 计算误差矩阵
+        Matrix4d error = AX - XB;
+
+        // 使用 Frobenius 范数衡量误差
+        float frobenius_norm = error.norm();
+        total_error += frobenius_norm;
+
+        std::cout << "第 " << i + 1 << " 对变换的误差 (Frobenius 范数): " << frobenius_norm << std::endl;
+    }
+
+    std::cout << "所有变换对的总误差: " << total_error << std::endl;
+}
+void validateHandEyeCalibration(const Eigen::Matrix4d& X,
+                                const std::vector<Eigen::Matrix4d>& A,
+                                const std::vector<Eigen::Matrix4d>& B) {
+    double totalError = 0.0;
+
+    for (size_t i = 0; i < A.size(); ++i) {
+        Eigen::Matrix4d left = A[i] * X;
+        Eigen::Matrix4d right = X * B[i];
+        Eigen::Matrix4d diff = left - right;
+
+        // 计算 Frobenius 范数
+        double error = diff.norm();
+        totalError += error;
+
+        std::cout << "Pair " << i + 1 << " Error: " << error << std::endl;
+    }
+
+    std::cout << "Average Error: " << totalError / A.size() << std::endl;
 }
 
 // 随机生成变换矩阵（用于模拟测试数据）
@@ -160,25 +174,6 @@ Eigen::Matrix4d optimizeHandEye(const std::vector<Eigen::Matrix4d>& A,
     return X; // 返回标定结果
 }
 
-void validateHandEyeCalibration(const Eigen::Matrix4d& X,
-                                const std::vector<Eigen::Matrix4d>& A,
-                                const std::vector<Eigen::Matrix4d>& B) {
-    double totalError = 0.0;
-
-    for (size_t i = 0; i < A.size(); ++i) {
-        Eigen::Matrix4d left = A[i] * X;
-        Eigen::Matrix4d right = X * B[i];
-        Eigen::Matrix4d diff = left - right;
-
-        // 计算 Frobenius 范数
-        double error = diff.norm();
-        totalError += error;
-
-        std::cout << "Pair " << i + 1 << " Error: " << error << std::endl;
-    }
-
-    std::cout << "Average Error: " << totalError / A.size() << std::endl;
-}
 
 int main() {
     std::vector<Matrix4f> A_list;
@@ -196,14 +191,6 @@ int main() {
         B_list.push_back(B);
     }
 
-    Matrix4f X_estimated;
-    solveHandEyeCalibration(A_list, B_list, X_estimated);
-
-    // 输出估计的手眼标定结果
-    std::cout << "估计的手眼标定变换矩阵 X_estimated:\n" << X_estimated << std::endl;
-
-    // 验证 X 的误差
-    verifyHandEyeCalibration(A_list, B_list, X_estimated);
 
     std::cout << "------------------------------------------" << std::endl;
 
@@ -217,11 +204,11 @@ int main() {
     }
 
     // 调用优化函数计算手眼变换
-    Eigen::Matrix4d X1 = optimizeHandEye(A_list_double, B_list_double);
-    validateHandEyeCalibration(X1, A_list_double, B_list_double);
-
+    Eigen::Matrix4d X = optimizeHandEye(A_list_double, B_list_double);
+//    validateHandEyeCalibration(X, A_list_double, B_list_double);
+    verifyHandEyeCalibration(A_list_double, B_list_double, X);
     // 输出最终的手眼标定结果
-    std::cout << "Hand-Eye Calibration Result (X1):\n" << X1 << std::endl;
+    std::cout << "Hand-Eye Calibration Result (X1):\n" << X << std::endl;
     return 0;
 }
 
