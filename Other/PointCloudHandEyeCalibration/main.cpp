@@ -1,148 +1,228 @@
-﻿#include <iostream>
-#include <vector>
+﻿#include <pcl/point_cloud.h>
+#include <pcl/registration/icp.h>
+#include <pcl/point_types.h>
+#include <pcl/console/print.h>
 #include <Eigen/Dense>
+#include <iostream>
+#include <vector>
 #include <random>
-#include <pcl/pcl_macros.h>
+#include <Eigen/Dense>
+#include <ceres/ceres.h>
+using namespace pcl;
+using namespace Eigen;
 
-// 随机生成正交旋转矩阵
-Eigen::Matrix3d generateRandomRotation() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dist(-M_PI, M_PI);
+// 解决手眼标定问题并返回 X
+void solveHandEyeCalibration(const std::vector<Matrix4f> &A_list, const std::vector<Matrix4f> &B_list, Matrix4f &X) {
+    size_t n = A_list.size();
 
-    double angle_x = dist(gen);
-    double angle_y = dist(gen);
-    double angle_z = dist(gen);
+    // 使用 MatrixXd 来容纳任意大小矩阵
+    MatrixXd A(4 * n, 16);
+    MatrixXd B(4 * n, 16);
 
-    Eigen::Matrix3d Rx;
-    Rx << 1, 0, 0,
-            0, cos(angle_x), -sin(angle_x),
-            0, sin(angle_x), cos(angle_x);
+    for (size_t i = 0; i < n; ++i) {
+        // 变换矩阵 A_list[i] 和 B_list[i] 转换成 1D 向量形式填入 A 和 B
+        A.block<4, 4>(4 * i, 0) = A_list[i].topLeftCorner(4, 4).cast<double>(); // 强制转换为 double
+        B.block<4, 4>(4 * i, 0) = B_list[i].topLeftCorner(4, 4).cast<double>(); // 强制转换为 double
+    }
 
-    Eigen::Matrix3d Ry;
-    Ry << cos(angle_y), 0, sin(angle_y),
-            0, 1, 0,
-            -sin(angle_y), 0, cos(angle_y);
+    // 求解最小二乘问题 A*X = X*B
+    MatrixXd X_sol = (A.transpose() * A).ldlt().solve(A.transpose() * B);
 
-    Eigen::Matrix3d Rz;
-    Rz << cos(angle_z), -sin(angle_z), 0,
-            sin(angle_z), cos(angle_z), 0,
-            0, 0, 1;
-
-    Eigen::Matrix3d R = Rz * Ry * Rx;
-
-    // 校正旋转矩阵以确保正交性
-    Eigen::JacobiSVD<Eigen::Matrix3d> svd(R, Eigen::ComputeFullU | Eigen::ComputeFullV);
-    R = svd.matrixU() * svd.matrixV().transpose();
-
-    return R;
+    // 将解转换为 Matrix4f
+    X = Matrix4f::Identity();
+    for (size_t i = 0; i < 4; ++i) {
+        for (size_t j = 0; j < 4; ++j) {
+            X(i, j) = X_sol(i, j);
+        }
+    }
 }
 
-// 随机生成平移向量
-Eigen::Vector3d generateRandomTranslation(double range = 0.1) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dist(-range, range);
+// 验证 X 是否满足 AX = XB
+void verifyHandEyeCalibration(const std::vector<Matrix4f> &A_list, const std::vector<Matrix4f> &B_list, const Matrix4f &X) {
+    float total_error = 0.0f;
 
-    return Eigen::Vector3d(dist(gen), dist(gen), dist(gen));
+    for (size_t i = 0; i < A_list.size(); ++i) {
+        // 计算 AX 和 XB
+        Matrix4f AX = A_list[i] * X;
+        Matrix4f XB = X * B_list[i];
+
+        // 计算误差矩阵
+        Matrix4f error = AX - XB;
+
+        // 使用 Frobenius 范数衡量误差
+        float frobenius_norm = error.norm();
+        total_error += frobenius_norm;
+
+        std::cout << "第 " << i + 1 << " 对变换的误差 (Frobenius 范数): " << frobenius_norm << std::endl;
+    }
+
+    std::cout << "所有变换对的总误差: " << total_error << std::endl;
 }
 
-// 随机生成变换矩阵
-Eigen::Matrix4d generateRandomTransform(double translation_range = 0.1) {
-    Eigen::Matrix4d T = Eigen::Matrix4d::Identity();
-    T.block<3, 3>(0, 0) = generateRandomRotation();
-    T.block<3, 1>(0, 3) = generateRandomTranslation(translation_range);
+// 随机生成变换矩阵（用于模拟测试数据）
+Matrix4f generateRandomTransform() {
+    Matrix4f T = Matrix4f::Identity();
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
+
+    // 随机旋转矩阵（保证正交性）
+    Vector3f axis = Vector3f(dist(gen), dist(gen), dist(gen)).normalized();
+    float angle = dist(gen) * M_PI;
+    AngleAxisf rotation(angle, axis);
+    T.block<3, 3>(0, 0) = rotation.matrix();
+
+    // 随机平移向量
+    T(0, 3) = dist(gen) * 2.0f; // 平移范围 [-2, 2]
+    T(1, 3) = dist(gen) * 2.0f;
+    T(2, 3) = dist(gen) * 2.0f;
+
     return T;
 }
 
-// 模拟数据生成函数
-void generateSimulationData(int num_samples, std::vector<Eigen::Matrix4d>& A_list,
-                            std::vector<Eigen::Matrix4d>& B_list, Eigen::Matrix4d& X) {
-    // 随机生成真实的手眼标定矩阵 X
-    X = generateRandomTransform();
 
-    for (int i = 0; i < num_samples; ++i) {
-        // 随机生成机械臂变换矩阵 A_i
-        Eigen::Matrix4d A = generateRandomTransform();
-        A_list.push_back(A);
+// 手眼标定的代价函数，基于AX = XB模型
+struct HandEyeCost {
+    Eigen::Matrix4d A; // 手臂末端位姿
+    Eigen::Matrix4d B; // 摄像头位姿
 
-        // 根据 X 和 A_i 生成对应的点云变换矩阵 B_i
-        Eigen::Matrix4d B = X.inverse() * A * X;
-        B_list.push_back(B);
+    HandEyeCost(const Eigen::Matrix4d& a, const Eigen::Matrix4d& b) : A(a), B(b) {}
+
+    template <typename T>
+    bool operator()(const T* const q, const T* const t, T* residuals) const {
+        // 将四元数转换为旋转矩阵
+        Eigen::Quaternion<T> quat(q[0], q[1], q[2], q[3]);
+        Eigen::Matrix<T, 3, 3> R = quat.toRotationMatrix();
+
+        // 构造手眼变换矩阵 X
+        Eigen::Matrix<T, 4, 4> X = Eigen::Matrix<T, 4, 4>::Identity();
+        X.template block<3, 3>(0, 0) = R;                     // 旋转部分
+        X.template block<3, 1>(0, 3) = Eigen::Matrix<T, 3, 1>(t[0], t[1], t[2]); // 平移部分
+
+        // 计算 AX - XB
+        Eigen::Matrix<T, 4, 4> AX = A.cast<T>() * X;
+        Eigen::Matrix<T, 4, 4> XB = X * B.cast<T>();
+        Eigen::Matrix<T, 4, 4> diff = AX - XB;
+
+        // 将残差定义为矩阵元素的差值
+        for (int i = 0; i < 12; ++i) {
+            residuals[i] = diff(i / 4, i % 4); // 仅计算前三行（3x4矩阵的残差）
+        }
+
+        return true;
     }
+
+    // 创建代价函数的静态方法
+    static ceres::CostFunction* Create(const Eigen::Matrix4d& A, const Eigen::Matrix4d& B) {
+        return new ceres::AutoDiffCostFunction<HandEyeCost, 12, 4, 3>(
+                new HandEyeCost(A, B));
+    }
+};
+
+// 使用Ceres优化器进行手眼标定
+Eigen::Matrix4d optimizeHandEye(const std::vector<Eigen::Matrix4d>& A,
+                                const std::vector<Eigen::Matrix4d>& B) {
+    // 初始化四元数和平移向量
+    double q[4] = {1.0, 0.0, 0.0, 0.0}; // 初始四元数（单位四元数，表示无旋转）
+    double t[3] = {0.0, 0.0, 0.0};     // 初始平移向量
+
+    // 构造Ceres优化问题
+    ceres::Problem problem;
+    for (size_t i = 0; i < A.size(); ++i) {
+        // 为每组 A 和 B 添加一个残差块
+        ceres::CostFunction* cost_function = HandEyeCost::Create(A[i], B[i]);
+        problem.AddResidualBlock(cost_function, nullptr, q, t);
+    }
+
+    // 设置四元数的归一化约束
+    problem.SetParameterization(q, new ceres::QuaternionParameterization());
+
+    // 设置优化器选项
+    ceres::Solver::Options options;
+    options.linear_solver_type = ceres::DENSE_QR;          // 使用稠密QR分解
+    options.minimizer_progress_to_stdout = true;           // 输出优化进度
+    options.max_num_iterations = 100;                     // 最大迭代次数
+    options.function_tolerance = 1e-10;                   // 函数容忍误差，控制优化精度
+
+    // 运行优化
+    ceres::Solver::Summary summary;
+    ceres::Solve(options, &problem, &summary);
+
+    // 打印优化结果
+    std::cout << summary.FullReport() << std::endl;
+
+    // 将优化结果转换为4x4的变换矩阵
+    Eigen::Quaterniond quat(q[0], q[1], q[2], q[3]);
+    Eigen::Matrix4d X = Eigen::Matrix4d::Identity();
+    X.block<3, 3>(0, 0) = quat.toRotationMatrix(); // 设置旋转部分
+    X.block<3, 1>(0, 3) = Eigen::Vector3d(t[0], t[1], t[2]); // 设置平移部分
+
+    return X; // 返回标定结果
 }
 
-// 手眼标定求解函数
-Eigen::Matrix4d solveHandEye(const std::vector<Eigen::Matrix4d>& A_list,
-                             const std::vector<Eigen::Matrix4d>& B_list) {
-    Eigen::Matrix3d M = Eigen::Matrix3d::Zero();
+void validateHandEyeCalibration(const Eigen::Matrix4d& X,
+                                const std::vector<Eigen::Matrix4d>& A,
+                                const std::vector<Eigen::Matrix4d>& B) {
+    double totalError = 0.0;
 
-    // 求解旋转部分
-    for (size_t i = 0; i < A_list.size(); ++i) {
-        Eigen::Matrix3d Ra = A_list[i].block<3, 3>(0, 0);
-        Eigen::Matrix3d Rb = B_list[i].block<3, 3>(0, 0);
-        M += Ra - Rb.transpose() * Ra * Rb;
+    for (size_t i = 0; i < A.size(); ++i) {
+        Eigen::Matrix4d left = A[i] * X;
+        Eigen::Matrix4d right = X * B[i];
+        Eigen::Matrix4d diff = left - right;
+
+        // 计算 Frobenius 范数
+        double error = diff.norm();
+        totalError += error;
+
+        std::cout << "Pair " << i + 1 << " Error: " << error << std::endl;
     }
 
-    Eigen::JacobiSVD<Eigen::Matrix3d> svd(M, Eigen::ComputeFullU | Eigen::ComputeFullV);
-    Eigen::Matrix3d R = svd.matrixU() * svd.matrixV().transpose();
-
-    // 修正旋转矩阵符号以确保正交性
-    if (R.determinant() < 0) {
-        R = -R;
-    }
-
-    // 求解平移部分
-    Eigen::Vector3d t = Eigen::Vector3d::Zero();
-    for (size_t i = 0; i < A_list.size(); ++i) {
-        t += A_list[i].block<3, 3>(0, 0) * B_list[i].block<3, 1>(0, 3) -
-             R * B_list[i].block<3, 3>(0, 0) * B_list[i].block<3, 1>(0, 3);
-    }
-    t /= A_list.size();
-
-    Eigen::Matrix4d X = Eigen::Matrix4d::Identity();
-    X.block<3, 3>(0, 0) = R;
-    X.block<3, 1>(0, 3) = t;
-    return X;
+    std::cout << "Average Error: " << totalError / A.size() << std::endl;
 }
 
 int main() {
-    // 模拟生成数据
-    std::vector<Eigen::Matrix4d> A_list;
-    std::vector<Eigen::Matrix4d> B_list;
-    Eigen::Matrix4d X_true;
+    std::vector<Matrix4f> A_list;
+    std::vector<Matrix4f> B_list;
 
-    int num_samples = 20; // 生成 20 组样本数据
-    generateSimulationData(num_samples, A_list, B_list, X_true);
+    // 生成多组测试数据
+    int num_pairs = 50;
+    Matrix4f X_true = generateRandomTransform(); // 真实的手眼标定变换矩阵
+    std::cout << "真实的手眼标定变换矩阵 X_true:\n" << X_true << std::endl;
 
-    // 使用手眼标定算法求解
-    Eigen::Matrix4d X_estimated = solveHandEye(A_list, B_list);
-
-    // 输出结果
-    std::cout << "真实手眼标定矩阵 (X_true):\n" << X_true << "\n" << std::endl;
-    std::cout << "估计手眼标定矩阵 (X_estimated):\n" << X_estimated << "\n" << std::endl;
-
-    // 计算误差
-    double rotation_error = 0.0;
-    double translation_error = 0.0;
-
-    for (size_t i = 0; i < A_list.size(); ++i) {
-        Eigen::Matrix3d Ra_est = A_list[i].block<3, 3>(0, 0) * X_estimated.block<3, 3>(0, 0);
-        Eigen::Matrix3d Rb_est = X_estimated.block<3, 3>(0, 0) * B_list[i].block<3, 3>(0, 0);
-
-        rotation_error += (Ra_est - Rb_est).norm(); // 旋转部分误差
-        translation_error += (A_list[i].block<3, 1>(0, 3) -
-                              X_estimated.block<3, 3>(0, 0) * B_list[i].block<3, 1>(0, 3) -
-                              X_estimated.block<3, 1>(0, 3))
-                .norm(); // 平移部分误差
+    for (int i = 0; i < num_pairs; ++i) {
+        Matrix4f A = generateRandomTransform(); // 随机生成 A
+        Matrix4f B = X_true.inverse() * A * X_true; // 根据 A 和 X_true 生成对应的 B
+        A_list.push_back(A);
+        B_list.push_back(B);
     }
 
-    rotation_error /= A_list.size();
-    translation_error /= A_list.size();
+    Matrix4f X_estimated;
+    solveHandEyeCalibration(A_list, B_list, X_estimated);
 
-    // 打印误差
-    std::cout << "旋转部分平均误差: " << rotation_error << std::endl;
-    std::cout << "平移部分平均误差: " << translation_error << std::endl;
+    // 输出估计的手眼标定结果
+    std::cout << "估计的手眼标定变换矩阵 X_estimated:\n" << X_estimated << std::endl;
 
+    // 验证 X 的误差
+    verifyHandEyeCalibration(A_list, B_list, X_estimated);
+
+    std::cout << "------------------------------------------" << std::endl;
+
+    std::vector<Eigen::Matrix4d> A_list_double;
+    for (const auto& mat : A_list) {
+        A_list_double.push_back(mat.cast<double>());
+    }
+    std::vector<Eigen::Matrix4d> B_list_double;
+    for (const auto& mat : B_list) {
+        B_list_double.push_back(mat.cast<double>());
+    }
+
+    // 调用优化函数计算手眼变换
+    Eigen::Matrix4d X1 = optimizeHandEye(A_list_double, B_list_double);
+    validateHandEyeCalibration(X1, A_list_double, B_list_double);
+
+    // 输出最终的手眼标定结果
+    std::cout << "Hand-Eye Calibration Result (X1):\n" << X1 << std::endl;
     return 0;
 }
+
+
