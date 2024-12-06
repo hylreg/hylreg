@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     QString str = ui->lineEdit->text();
-    std::cout<<str.toStdString()<<std::endl;
+    std::cout<<"Main:"<<str.toStdString()<<std::endl;
 
     emit lineEditTextChanged(str);
 }

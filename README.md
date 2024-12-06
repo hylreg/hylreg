@@ -1,9 +1,4 @@
-## PCL 学习笔记 👋
-pcl版本为1.14.1
-## ROS 学习笔记 👋
-## OpenCV 学习笔记 👋
-opencv版本为4.8.0
-## 深度学习 学习笔记 👋
+神经网络图像部署平台
 <!--
 **hylreg/hylreg** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
