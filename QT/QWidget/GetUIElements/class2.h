@@ -9,7 +9,7 @@ class Class2 : public QObject
 {
     Q_OBJECT
 public:
-    explicit Class2(const QString& text,QObject *parent);
+    explicit Class2(const QString& text);
 
     void Class2Func();
 

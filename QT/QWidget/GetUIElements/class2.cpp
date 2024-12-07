@@ -1,7 +1,7 @@
 #include "class2.h"
 
-Class2::Class2(const QString& text,QObject *parent)
-    : QObject{parent},m_text(text)
+Class2::Class2(const QString& text)
+    : m_text(text)
 {
     Class2Func();
 }

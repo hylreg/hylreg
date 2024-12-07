@@ -178,7 +178,7 @@ Matrix4f addNoiseToMatrix(const Matrix4f& mat, float noise_level) {
     // 生成均值为0，标准差为 noise_level 的高斯噪声
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::normal_distribution<float> disR(-noise_level*0.1, noise_level*0.1);
+    std::normal_distribution<float> disR(-noise_level*0.01, noise_level*0.01);
     std::normal_distribution<float> disT(-noise_level, noise_level);
 
     Matrix4f noisy_matrix = mat;
@@ -249,7 +249,7 @@ int main() {
 
     // 生成多组测试数据
     int num_pairs = 15;
-    float noise_level = 0.01f; // 设定噪声的标准差
+    float noise_level = 1.0f; // 设定噪声的标准差
     Matrix4f X_true = generateRandomTransform(); // 真实的手眼标定变换矩阵
     std::cout << "真实的手眼标定变换矩阵 X_true:\n" << X_true << std::endl;
 
