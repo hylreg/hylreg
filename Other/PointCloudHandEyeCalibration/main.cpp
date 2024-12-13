@@ -87,9 +87,9 @@ Matrix4f generateRandomTransform() {
     T.block<3, 3>(0, 0) = rotation.matrix();
 
     // 随机平移向量
-    T(0, 3) = dist(gen) * 2.0f; // 平移范围 [-2, 2]
-    T(1, 3) = dist(gen) * 2.0f;
-    T(2, 3) = dist(gen) * 2.0f;
+    T(0, 3) = dist(gen) * 200.0f; // 平移范围 [-2, 2]
+    T(1, 3) = dist(gen) * 200.0f;
+    T(2, 3) = dist(gen) * 200.0f;
 
     return T;
 }
