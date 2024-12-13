@@ -5,3 +5,5 @@ cmake-build-*/
 /Demo/MyQtApp/CMakeLists.txt.user
 /Demo/MyQtApp/build/
 /Demo/MyQtApp/res/
+/Center.exe
+/Center.obj
