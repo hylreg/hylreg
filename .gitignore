@@ -7,3 +7,15 @@ cmake-build-*/
 /Demo/MyQtApp/res/
 /Center.exe
 /Center.obj
+/build/
+/build/
+/Demo/MyROS/build/
+/Demo/MyROS/install/
+/Demo/MyROS/log/
+/build/
+/Demo/MyROS/
+/ROS/ros2_ws/build/
+/ROS/ros2_ws/install/
+/ROS/ros2_ws/log/
+/Demo/MyVision/out/
+.vscode/
