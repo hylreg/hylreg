@@ -13,7 +13,6 @@ cmake-build-*/
 /Demo/MyROS/install/
 /Demo/MyROS/log/
 /build/
-/Demo/MyROS/
 /ROS/ros2_ws/build/
 /ROS/ros2_ws/install/
 /ROS/ros2_ws/log/
