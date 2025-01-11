@@ -6,11 +6,27 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import GroupAction               # launch文件中的执行动作
+from launch_ros.actions import PushRosNamespace      # ROS命名空间配置
+
 
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
+
+
+    parameter_yaml = IncludeLaunchDescription(        # 包含指定路径下的另外一个launch文件
+      PythonLaunchDescriptionSource([os.path.join(
+         get_package_share_directory('astra_camera'), 'launch'),
+        '/astra_mini.launch.py'])
+      )
+
+    parameter_yaml_with_namespace = GroupAction(      # 对指定launch文件中启动的功能加上命名空间
+        actions=[
+        PushRosNamespace(''),
+        parameter_yaml]
+    )
 
 
     # Include the robot_state_publisher launch file, provided by our own package. Force sim time to be enabled
@@ -69,4 +85,5 @@ def generate_launch_description():
         spawn_entity,
         # keyboard_control,
         rgbd_subscriber,
+        parameter_yaml_with_namespace,
     ])

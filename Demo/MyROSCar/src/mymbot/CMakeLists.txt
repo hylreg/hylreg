@@ -15,6 +15,7 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(pcl_ros REQUIRED)
 
 add_executable(rgbd_subscriber src/rgbdSub.cpp)
 
@@ -23,6 +24,8 @@ ament_target_dependencies(rgbd_subscriber
   sensor_msgs
   cv_bridge
   OpenCV
+  pcl_ros 
+  pcl_conversions 
 
 )
 
