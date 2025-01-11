@@ -19,3 +19,6 @@ cmake-build-*/
 /Demo/MyVision/out/
 .vscode/
 Demo/MyROS/src/pubsub/launch/__pycache__/mylaunch.cpython-310.pyc
+Demo/MyROSCar/log/
+Demo/MyROSCar/build/
+Demo/MyROSCar/install/
