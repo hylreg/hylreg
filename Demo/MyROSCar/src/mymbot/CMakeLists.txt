@@ -11,9 +11,27 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(cv_bridge REQUIRED)
+find_package(OpenCV REQUIRED)
+
+add_executable(rgbd_subscriber src/rgbdSub.cpp)
+
+ament_target_dependencies(rgbd_subscriber
+  rclcpp
+  sensor_msgs
+  cv_bridge
+  OpenCV
+
+)
+
+install(TARGETS
+  rgbd_subscriber
+  DESTINATION lib/${PROJECT_NAME})
+
 install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
-
 )
 
 install(DIRECTORY worlds/

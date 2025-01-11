@@ -51,6 +51,12 @@ def generate_launch_description():
                         output='screen')
 
 
+
+    rgbd_subscriber = Node(
+        package='mymbot',
+        executable='rgbd_subscriber',
+    )
+
     # keyboard_control = Node(
     #     package='teleop_twist_keyboard',
     #     executable='teleop_twist_keyboard',
@@ -62,4 +68,5 @@ def generate_launch_description():
         gazebo,
         spawn_entity,
         # keyboard_control,
+        rgbd_subscriber,
     ])
