@@ -55,6 +55,9 @@ private:
     try {
       // 将 ROS2 图像消息转换为 OpenCV 图像
       cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+      //打印图像信息
+      RCLCPP_INFO(this->get_logger(), "Received Image: width=%d, height=%d, encoding=%s, step=%d",
+                  msg->width, msg->height, msg->encoding.c_str(), msg->step);
 
       // 处理图像，例如显示图像
       cv::imshow("Received rgb", cv_ptr->image);

@@ -19,7 +19,7 @@ def generate_launch_description():
     parameter_yaml = IncludeLaunchDescription(        # 包含指定路径下的另外一个launch文件
       PythonLaunchDescriptionSource([os.path.join(
          get_package_share_directory('astra_camera'), 'launch'),
-        '/astra_mini.launch.py'])
+        '/astra_pro.launch.xml'])
       )
 
     parameter_yaml_with_namespace = GroupAction(      # 对指定launch文件中启动的功能加上命名空间
