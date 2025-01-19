@@ -66,7 +66,7 @@ class YOLODetectionNode(Node):
                 bgr = (b, g, r)
 
                 # image[abs(int(y)), abs(int(x))] = bgr
-                # self.get_logger().info(f"X: {int(x)}, Y: {int(y)}, Z: {int(z)}")
+                # self.get_logger().info(f"X: {x}, Y: {y}, Z: {z}")
 
 
             # cv2.circle(image, (320, 240), 100, (0, 0, 255), -1)
