@@ -1,11 +1,11 @@
 from pathlib import Path
 
-dataset_path = Path("/home/hyl/Downloads/archive/Fruits-detection")  # replace with 'path/to/dataset' for your custom data
+dataset_path = Path("/home/hyl/Desktop/test/")  # replace with 'path/to/dataset' for your custom data
 labels = sorted(dataset_path.rglob("*labels/*.txt"))  # all data in 'labels'
 
 import yaml
 
-yaml_file = "/home/hyl/Downloads/archive/Fruits-detection/data.yaml"  # your data YAML with data directories and names dictionary
+yaml_file = "/home/hyl/Desktop/test//data.yaml"  # your data YAML with data directories and names dictionary
 with open(yaml_file, "r", encoding="utf8") as y:
     classes = yaml.safe_load(y)["names"]
 cls_idx = sorted(classes)
@@ -98,6 +98,8 @@ for split in folds_df.columns:
             ds_y,
         )
 
+print(ds_yamls)
+
 import shutil
 
 for image, label in zip(images, labels):
@@ -115,7 +117,7 @@ fold_lbl_distrb.to_csv(save_path / "kfold_label_distribution.csv")
 
 from ultralytics import YOLO
 
-weights_path = "../yolo11n-cls.pt"
+weights_path = "yolo11n.pt"
 # model = YOLO(weights_path, task="detect")
 
 
