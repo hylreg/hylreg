@@ -46,24 +46,47 @@ class YOLODetectionNode(Node):
 
     def depth_callback(self, msg):
 
+
+
         if self.depth_image_pub.get_subscription_count() > 0:
             points = pc2.read_points(msg, field_names=("x", "y", "z","rgb"), skip_nans=True)
             processed_points = []
 
             image_width = 640
-            image_height = 480  
+            image_height = 480
+
+            x_min, x_max = -image_width/2, image_width/2  # 示例范围
+            y_min, y_max = -image_height/2, image_height/2  # 示例范围
+
+            resolutionX = image_width / (x_max - x_min)
+            resolutionY = image_height / (y_max - y_min)
+
             image = np.zeros((image_height, image_width, 3), dtype=np.uint8)
+
 
             for p in points:
                 x, y, z, rgb= p
                 processed_points.append([x, y, z])
 
                 rgb = int(rgb)
+                # r = 127
                 r = (rgb >> 16) & 0x0000ff
                 g = (rgb >> 8) & 0x0000ff
                 b = rgb & 0x0000ff
 
                 bgr = (b, g, r)
+
+
+
+                # 映射到图像坐标
+                x_img = int((x - x_min) * resolutionX)
+                y_img = int((y - y_min) * resolutionY)
+
+                # 确保坐标在图像范围内
+                x_img = max(0, min(x_img, image_width - 1))
+                y_img = max(0, min(y_img, image_height - 1))
+
+                image[y_img, x_img] = bgr
 
                 # image[abs(int(y)), abs(int(x))] = bgr
                 # self.get_logger().info(f"X: {x}, Y: {y}, Z: {z}")
@@ -71,7 +94,7 @@ class YOLODetectionNode(Node):
 
             # cv2.circle(image, (320, 240), 100, (0, 0, 255), -1)
 
-            image[:] = bgr
+            # image[:] = bgr
             cv2.imshow('depth', image)
             cv2.waitKey(1)
 

@@ -124,9 +124,9 @@ weights_path = "yolo11n.pt"
 results = {}
 
 # Define your additional arguments here
-batch = 16
+batch = 32
 project = "kfold_demo"
-epochs = 100
+epochs = 10
 
 for k in range(ksplit):
     dataset_yaml = ds_yamls[k]
