@@ -14,15 +14,18 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    </item>
+    <item row="1" column="1">
      <widget class="QPushButton" name="pushButton_start">
       <property name="text">
        <string>开启线程任务</string>
       </property>
      </widget>
     </item>
-    <item>
+    <item row="2" column="1">
      <widget class="QPushButton" name="pushButton_stop">
       <property name="text">
        <string>关闭线程任务</string>
@@ -37,7 +40,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>28</height>
     </rect>
    </property>
   </widget>

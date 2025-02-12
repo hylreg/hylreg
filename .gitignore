@@ -18,7 +18,7 @@ cmake-build-*/
 /ROS/ros2_ws/log/
 /Demo/MyVision/out/
 .vscode/
-Demo/MyROS/src/pubsub/launch/__pycache__/mylaunch.cpython-310.pyc
+Demo/MyROS/src/pubsub/launch/
 Demo/MyROSCar/log/
 Demo/MyROSCar/build/
 Demo/MyROSCar/install/
