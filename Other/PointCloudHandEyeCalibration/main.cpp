@@ -148,7 +148,9 @@ Eigen::Matrix4d optimizeHandEye(const std::vector<Eigen::Matrix4d>& A,
     }
 
     // 设置四元数的归一化约束
-    problem.SetParameterization(q, new ceres::QuaternionParameterization());
+//    problem.SetParameterization(q, new ceres::QuaternionParameterization());
+    problem.SetManifold(q, new ceres::QuaternionManifold());
+
 
     // 设置优化器选项
     ceres::Solver::Options options;
