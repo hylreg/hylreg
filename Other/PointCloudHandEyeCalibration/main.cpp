@@ -1,4 +1,5 @@
-﻿#include <pcl/point_cloud.h>
+
+#include <pcl/point_cloud.h>
 #include <pcl/registration/icp.h>
 #include <pcl/point_types.h>
 #include <pcl/console/print.h>
@@ -192,12 +193,12 @@ Matrix4f addNoiseToMatrix(const Matrix4f& mat, float noise_level) {
     //     }
     // }
 
-     // 给每个元素加噪声
-     for (int i = 0; i < 3; ++i) {
-         for (int j = 0; j < 3; ++j) {
-             noisy_matrix(i, j) += disR(gen);
-         }
-     }
+    // 给每个元素加噪声
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            noisy_matrix(i, j) += disR(gen);
+        }
+    }
 
     // 只对平移部分（即最后一列的前三个元素）加噪声
     for (int i = 0; i < 3; ++i) {
@@ -251,7 +252,7 @@ int main() {
 
     // 生成多组测试数据
     int num_pairs = 15;
-    float noise_level = 1.0f; // 设定噪声的标准差
+    float noise_level = 0.01f; // 设定噪声的标准差
     Matrix4f X_true = generateRandomTransform(); // 真实的手眼标定变换矩阵
     std::cout << "真实的手眼标定变换矩阵 X_true:\n" << X_true << std::endl;
 
